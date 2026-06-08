@@ -164,20 +164,16 @@ for kr in kappas:
 
 # ===================== Deck figures =====================
 # Fig 1: value function + simulated paths
-fig, ax = plt.subplots(1, 2, figsize=(12, 4.6))
-ax[0].plot(s_grid, V, color=BLUE, lw=2.4, label="enhanced")
-ax[0].plot(sg0, V0, color="#999", lw=1.8, ls="--", label="no-externality baseline")
-ax[0].set_xlabel("market share s"); ax[0].set_ylabel("V(s)")
-ax[0].set_title("Value function V(s)", fontweight="bold"); ax[0].grid(alpha=0.3); ax[0].legend()
+fig, ax = plt.subplots(figsize=(7.6, 4.8))
 cmap = plt.cm.viridis
 for j, s0 in enumerate(np.linspace(0.02, 0.98, 25)):
     p, _, _ = simulate(s0, 60, s_grid, pol)
-    ax[1].plot(range(len(p)), p, color=cmap(j / 24), lw=1, alpha=0.7)
+    ax.plot(range(len(p)), p, color=cmap(j / 24), lw=1.1, alpha=0.75)
 for sfp, st in fps_enh:
-    ax[1].axhline(sfp, color=BLUE if st == "stable" else "#E63946", lw=1.4, ls="-" if st == "stable" else "--")
-    ax[1].text(61, sfp, f"s*={sfp:.3f}", va="center", fontsize=9, color=BLUE)
-ax[1].set_xlabel("time t (periods)"); ax[1].set_ylabel("s_t"); ax[1].set_ylim(0, 1); ax[1].set_xlim(0, 70)
-ax[1].set_title("Simulated paths -> unique steady state", fontweight="bold"); ax[1].grid(alpha=0.3)
+    ax.axhline(sfp, color=BLUE if st == "stable" else "#E63946", lw=1.5, ls="-" if st == "stable" else "--")
+    ax.text(61, sfp, f"s*={sfp:.3f}", va="center", fontsize=10, color=BLUE)
+ax.set_xlabel("time t (periods)"); ax.set_ylabel("market share s_t"); ax.set_ylim(0, 1); ax.set_xlim(0, 70)
+ax.set_title("Simulated paths from 25 starts -> unique steady state", fontweight="bold"); ax.grid(alpha=0.3)
 plt.tight_layout(); plt.savefig("./fig_value_paths.png", dpi=160, bbox_inches="tight"); plt.close()
 
 # Fig 2: phase diagram
@@ -213,10 +209,10 @@ plt.tight_layout(); plt.savefig("./fig_bifurcation.png", dpi=160, bbox_inches="t
 # Fig 4a: transition building blocks
 ss = np.linspace(0, 1, 200)
 fig, ax = plt.subplots(figsize=(6.8, 4.6))
-ax.plot(ss, [alpha(s, "S", "A") * (1 - s) for s in ss], color="#2A9D8F", lw=2.6, label=r"acquisition inflow $\alpha(s)(1-s)$ (Bass)")
-ax.plot(ss, [alpha(s, "S", "A") for s in ss], color="#2A9D8F", lw=1.4, ls=":", label=r"$\alpha(s)=\alpha_0+\kappa_\alpha s \equiv p+qs$")
+ax.plot(ss, [alpha(s, "S", "A") * (1 - s) for s in ss], color="#2A9D8F", lw=2.6, label=r"acquisition inflow $\alpha(s)(1-s)$")
+ax.plot(ss, [alpha(s, "S", "A") for s in ss], color="#2A9D8F", lw=1.4, ls=":", label=r"acquisition rate $\alpha(s)=\alpha_0+\kappa_\alpha s$")
 ax.plot(ss, [rho(s, "S", "R") * s for s in ss], color=BLUE, lw=2.6, label=r"retention inflow $\rho(s)\,s$")
-ax.set_xlabel("market share s"); ax.set_title("Transition building blocks (Bass + network retention)", fontweight="bold")
+ax.set_xlabel("market share s"); ax.set_title("Transition building blocks: retention vs acquisition inflow", fontweight="bold")
 ax.legend(fontsize=9); ax.grid(alpha=0.3)
 plt.tight_layout(); plt.savefig("./fig_buildingblocks.png", dpi=160, bbox_inches="tight"); plt.close()
 

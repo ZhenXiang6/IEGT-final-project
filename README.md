@@ -73,8 +73,9 @@ Dependencies: `numpy`, `matplotlib`
 
 `06_enhanced_model.py` is the **enhanced** model behind the current deck. On top of the report
 baseline it adds: a retention network externality `ρ=ρ₀+δ+κ_ρ·s` (Katz–Shapiro 1985; Klemperer
-1987), an acquisition **Bass-diffusion** term `α=α₀+δ̃+κ_α·s` (so the inflow
-`α(s)(1−s)=(p+q·s)(1−s)`; Bass 1969), and **market-scale costs** `C_A(s)=c_A(1+λ_A s)`,
+1987), an acquisition-side **network externality** `α=α₀+δ̃+κ_α·s` (the deck frames both `κ_ρ` and
+`κ_α` as network externalities; mathematically `κ_α` is the Bass imitation coefficient, inflow
+`α(s)(1−s)`), and **market-scale costs** `C_A(s)=c_A(1+λ_A s)`,
 `C_R(s)=c_R(1+λ_R s)` with `λ_A>λ_R` (Min et al. 2016). Value iteration on a 401-point grid gives
 a 3-regime policy, steady state `s*≈0.744` (vs 0.505 without externalities), ~23% incumbent
 advantage, and a `κ_ρ`-bifurcation toward market concentration. Run it in a venv (the default
@@ -88,8 +89,16 @@ python3 -m venv .venv && .venv/bin/pip install numpy matplotlib
 The literature behind every assumption was surveyed and **adversarially verified online** (a
 multi-agent workflow); the 40 verified citations (DOIs + evidence URLs) are in `RESEARCH_dossier.md`.
 
+`experiments.py` is an importable sweep harness over the enhanced calibration
+(`analyze / sweep1 / grid2 / multiplicity_scan`, no import side effects). A systematic scan of every
+exogenous parameter is written up in **`EXPERIMENTS_REPORT.md`** (Traditional Chinese, 9 findings) —
+e.g. the three-regime structure is invariant across the whole tested range, the two switching
+thresholds decouple (pricing ← price ratio; acquisition/retention ← cost scale), incumbent advantage
+*shrinks* with patience, scale-dependent acquisition cost acts as an entry barrier, and strong
+retention externalities produce a tipping jump and genuine path dependence (two stable steady states).
+
 `OTT_enhanced_slides.tex` is the **current** Beamer deck (clean white theme, no decorations, royal
-blue `#003EA8`, 25 pages, 6 sections; each cited paper carries a one-line explanation). Build with
+blue `#003EA8`, 22 pages, 6 sections; each cited paper carries a one-line explanation). Build with
 `xelatex` twice. (`OTT_strategy_slides.tex` is the earlier report-based deck.)
 
 ### Building the presentation

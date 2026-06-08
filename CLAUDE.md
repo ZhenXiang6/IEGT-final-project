@@ -84,6 +84,15 @@ is near-identical. When comparing or porting logic, focus here:
 
 ## 工作紀錄 / TODO
 
+**參數實驗 + 簡報精修 (2026-06-09):**
+- 新增 **`experiments.py`**(可重現掃描 harness:`analyze/sweep1/grid2/multiplicity_scan`,匯入無副作用;校準同 `06`)。跑兩批 sweep + 雙穩態搜尋,結論寫成 **`EXPERIMENTS_REPORT.md`**(繁中,9 大發現,先不進簡報)。重點啟示:三段策略結構為「不變量」、定價/客群門檻**維度解耦**、**耐心悖論**(β↑→在位者優勢↓ 0.75→0.15)、**成本悖論**(λ_A↑ 穩態不變但在位者優勢↑,為進入障礙)、**φ₁ 在均衡幾乎不 binding**、κ_ρ 臨界躍遷、**路徑相依/雙穩態已驗證**(強留存外部性下起點決定命運)、兩種網路外部性方向相反(κ_ρ 鞏固龍頭、κ_α 助挑戰者)。
+- 簡報 `OTT_enhanced_slides.tex` 精修(現 **22 頁**):
+  - **合併原 13/14 頁** → 單頁「Revenue \& Cost function」:保留兩條 boxed 主方程式 + 精簡說明 + 合併「參數設計」,移除 `fig_cost.png`。
+  - **改寫 16/17 頁**(使用者:專案已與 Bass 脫鉤、網路外部性已內建於 base model):16 頁改為「Steady State 收斂」(後續使用者再要求**移除 value function 圖**,故 `fig_value_paths` 重生為**單面板「收斂路徑」**、V(s) 子圖拿掉),17 頁改為「轉移機制與在位者優勢」(移除 Bass,改述兩種網路外部性方向相反,用 κ_α 實驗 0.28→0.16)。
+  - **第 14 頁(Bellman)排版修復**:使用者刪掉左欄「存在性與唯一性」block 留下空欄;改填精簡「方程式直觀」block 與右欄 Value Iteration 並排,恢復平衡。
+  - **重生圖**:編輯 `06_enhanced_model.py` 移除 `fig_value_paths` 的「no-externality baseline」對照線、將該圖改為單面板收斂路徑、移除 `fig_buildingblocks` 的 "Bass" 標籤/標題,重跑 06 產生。
+- `.gitignore`:新增 `_*.py`(scratch 驅動)與大型來源 PDF(`OTT_strategy_model_report-2.pdf`、`IEGT final project slide.pdf`)排除。
+
 **強化版簡報 (2026-06-08 續):**
 - 依使用者 guideline `IEGT final project slide.pdf` 重製 **`OTT_enhanced_slides.tex`**(乾淨白底、**無格紙/裝飾**,寶藍 `#003EA8` 重點色,25 頁,6 章節)。使用者明確要求拿掉背景網格與小裝飾、專注內容。作者為 Group E(徐哲恆/李思嫻/陳奕廷/廖振翔)。
 - 文獻經 **multi-agent workflow**(survey → 敵意查證 → synthesize,Sonnet agents;`ott-lit-survey-verify`)上網查證 40 篇,存 `RESEARCH_dossier.md`(每篇含 DOI/來源 URL);驗證更正了幾處錯誤(如 flat-rate bias 成因、Erickson 1992 期刊為 Management Science)。每張文獻投影片在引用下方附一句說明。

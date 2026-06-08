@@ -10,7 +10,7 @@
 *.blg
 *.fls
 *.fdb_latexmk
-*.synctex.gz
+*.synctex*
 *.xdv
 
 # ===== Python =====
@@ -19,6 +19,14 @@ __pycache__/
 .venv/
 venv/
 
+# scratch / one-off experiment drivers (keep experiments.py)
+_*.py
+probe*.py
+
 # ===== OS / editor =====
 .DS_Store
 .vscode/
+
+# ===== Large source / reference material (not project deliverables) =====
+OTT_strategy_model_report-2.pdf
+IEGT final project slide.pdf

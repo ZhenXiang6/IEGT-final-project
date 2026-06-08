@@ -185,7 +185,7 @@
   \refx{Balasubramanian, Bhattacharya \& Krishnan (2015)}{Marketing Science}{selling(類 SVOD)vs pay-per-use(類 TVOD):獨佔利後者、競爭利前者。}
   \refx{Rao (2015)}{Marketing Science}{無承諾下「買斷(類 TVOD)」與「租用(類 SVOD)」並存最適,間接價格歧視。}
   \smallskip
-  \textbf{\color{rblue}Dimension 2:客群策略(Acqusision vs Retention)}\par\smallskip
+  \textbf{\color{rblue}Dimension 2:客群策略(Acquisition vs Retention)}\par\smallskip
   \refx{Ben Rhouma \& Zaccour (2018)}{Management Science}{動態規劃最佳化獲取與留存支出(電信 panel 實證)。}
   \refx{Reinartz, Thomas \& Kumar (2005)}{J.\ of Marketing}{獲取/留存資源最適配置隨顧客關係階段而異。}
   \refx{Datta, Foubert \& Van Heerde (2015)}{JMR}{Free-trail客戶 CLV 低 59\%、存續期約三分之一。}
@@ -230,7 +230,7 @@
 \end{frame}
 
 \begin{frame}{模型建構－狀態轉移(市佔率)}
-  \[ \boxed{\,s_{t+1}=\underbrace{\rho(a_t,s_t)}_{\text{留存率}}\cdot s_t \;+\; \underbrace{\alpha(a_t,s_t)}_{\text{獲取率}}\cdot(1-s_t)\,} \]
+  \[ \boxed{\,s_{t+1}=\underbrace{\rho(a_t,s_t)}_{\text{retention rate}}\cdot s_t \;+\; \underbrace{\alpha(a_t,s_t)}_{\text{Acquisition}}\cdot(1-s_t)\,} \]
   \begin{itemize}
     \item 第一項 $\rho\,s$:本期留下的\textbf{既有客戶}(留存率 $\rho$)。
     \item 第二項 $\alpha(1-s)$:從\textbf{非用戶池} $1-s$ 獲取的新客(獲取率 $\alpha$)。
@@ -271,7 +271,7 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{模型建構－利潤函數}
+\begin{frame}{模型建構－Profit function}
   \[ \boxed{\,\pi(s,a)=\underbrace{R(s,P)}_{\text{每用戶收入}}\cdot\, s \;-\; \underbrace{C(C,s)}_{\text{行銷成本}}\,} \]
   \begin{itemize}
     \item $R(s,P)$ 為每用戶每期收入,\quad $R(s,P)\cdot s$ 為總收入
@@ -279,65 +279,50 @@
   \end{itemize}
   \vskip0.4em
   \begin{block}{trade-off}\footnotesize
-    \textbf{短期 vs.\ 跨期}:同 pricing 下留存(R)短期成本低;但獲取(A)提高 $\alpha$、推升未來 $s$,有跨期利益。\\
+    \textbf{短期 vs.\ 跨期}:同 pricing 下 Retention 短期成本低; 但 Acquisition 提高 $\alpha$、推升未來 $s$,有跨期利益。\\
   \end{block}
 \end{frame}
 
-\begin{frame}{模型建構－收入函數}
-  \[ \boxed{\,R(s,\mathrm S)=\underbrace{p_S}_{\text{規模無感}},\qquad R(s,\mathrm T)=\underbrace{p_T\,(\varphi_0+\varphi_1\, s)}_{\text{規模敏感}},\quad \varphi_1>0\,} \]
+\begin{frame}{模型建構－Revenue \& Cost function}
+  \[ \boxed{\,R(s,\mathrm S)=p_S,\qquad R(s,\mathrm T)=p_T\,(\varphi_0+\varphi_1\, s),\quad \varphi_1>0\,} \]
   \begin{columns}[T]
     \column{0.5\textwidth}\footnotesize
-    \textbf{SVOD($p_S$):規模無感的均一收費。}\\
-    消費者存在 flat-rate bias,願為固定月費\textbf{溢價}(Lambrecht \& Skiera 2006);大型捆綁使 $p_S$ 具競爭韌性(Bakos \& Brynjolfsson 1999/2000)。
+    \textbf{SVOD($p_S$)：}flat-rate bias,願為固定月費溢價。
     \column{0.5\textwidth}\footnotesize
-    \textbf{TVOD($p_T(\varphi_0{+}\varphi_1 s)$):規模敏感。}\\
-    平台越大 $\Rightarrow$ 目錄／受眾越大 $\Rightarrow$ 人均購買頻率上升;Carroni \& Paolini (2020) 證受眾達臨界值後平台轉向純訂閱($T\!\to\!S$)。
+    \textbf{TVOD($p_T(\varphi_0{+}\varphi_1 s)$)：}平台越大、受眾越大,人均購買頻率隨 $s$ 上升。
   \end{columns}
-  \vskip0.5em
-  \begin{block}{校準與依據}\footnotesize
-    $p_S{=}15$、$p_T{=}5$、$\varphi_0{=}\varphi_1{=}0.5$;低 $s$ 時 $R(s,S)>R(s,T)$。Iyengar et al.\ (2011) 實證 two-part tariff 雖使留存 $-10.5\%$、用量 $-38.7\%$,但固定費收益補償使\textbf{整體利潤仍較高} —— 支撐 $p_S$ 高於邊際成本。
-  \end{block}
-\end{frame}
-
-\begin{frame}{模型建構－成本函數(市場規模)}
+  \vskip0.35em
   \[ \boxed{\,C_A(s)=c_A\,(1+\lambda_A\, s),\qquad C_R(s)=c_R\,(1+\lambda_R\, s),\qquad \lambda_A>\lambda_R\,} \]
-  \begin{columns}[T]
-    \column{0.52\textwidth}
-    \begin{block}{為何 $\lambda_A>\lambda_R$}\footnotesize
-      Min et al.\ (2016) 以 41 國無線電信實證:市場領導者的\textbf{獲取成本優勢隨滲透率上升}(高 $s$ 時拉新更貴),但\textbf{留存成本無此規模效應}。\\
-      $\Rightarrow$ 市場越飽和,廠商越\textbf{提早轉向留存}。
-    \end{block}
-    \column{0.48\textwidth}\centering
-    \includegraphics[width=0.70\linewidth]{fig_cost.png}\\
-    {\scriptsize $C_A(s)$(紅)陡升、$C_R(s)$(橘)緩升。}
-  \end{columns}
-  \vskip0.2em
-  {\footnotesize 校準:$c_A{=}1.2,\lambda_A{=}1.0$($C_A$:$1.2\!\to\!2.4$);$c_R{=}0.8,\lambda_R{=}0.3$($C_R$:$0.8\!\to\!1.04$)。}
+  {\footnotesize\textbf{$\lambda_A>\lambda_R$:}市場越飽和,獲取(A)成本隨滲透率\textbf{陡升}、留存(R)\textbf{無此規模效應} $\Rightarrow$ 廠商提早轉向留存(Min et al.\ 2016)。\par}
+  \vskip0.3em
+  \begin{block}{參數設計}\footnotesize
+    收入:$p_S{=}15,\ p_T{=}5,\ \varphi_0{=}\varphi_1{=}0.5$(低 $s$ 時 $R(s,S)>R(s,T)$)。\quad
+    成本:$c_A{=}1.2,\lambda_A{=}1.0$($C_A{:}\,1.2\!\to\!2.4$);\ $c_R{=}0.8,\lambda_R{=}0.3$($C_R{:}\,0.8\!\to\!1.04$)。
+  \end{block}
 \end{frame}
 
 \begin{frame}{模型建構－Bellman equation與求解方法}
   \[ \boxed{\,V(s)=\max_{a\in\mathcal A}\big\{\,\pi(s,a)+\beta\,V(s'(s,a))\,\big\}\,},\quad s'=\rho(a,s)\,s+\alpha(a,s)(1-s) \]
   \begin{columns}[T]
-    \column{0.52\textwidth}
-    \begin{block}{存在性與唯一性}\footnotesize
-      $\mathcal A$ 有限、$[0,1]$ 緊緻、$\pi$ 連續有界、$\beta\in(0,1)$ $\Rightarrow$ Bellman 算子為\textbf{壓縮映射},唯一不動點 $V^*$ 存在(Bellman 1957;Blackwell 1965;SLP 1989)。
+    \column{0.5\textwidth}\footnotesize
+    \begin{block}{方程式直觀}
+      市佔 $s$ 的最大折現價值 $V(s)$ $=$ \textbf{當期利潤} $\pi(s,a)$ $+$ \textbf{折現續值} $\beta V(s')$;每個 $s$ 在 4 個行動中取最大。\\[3pt]
+      $\beta\in(0,1)$、$\pi$ 連續有界 $\Rightarrow$ Bellman 算子為\textbf{壓縮映射},唯一解 $V^*$ 存在、value iteration 必收斂。
     \end{block}
-    \column{0.48\textwidth}
-    \begin{exampleblock}{Value Iteration}\footnotesize
-      1. 於 $s\in\{0,0.0025,\dots,1\}$(\textbf{401 格點})初始化 $V_0{=}0$。\\
-      2. 每格 $\times$ 每 $a$:$Q=\pi+\beta\,V_k(s')$,$V_{k+1}=\max_a Q$,以線性插值取 $V_k(s')$。\\
+    \column{0.5\textwidth}\footnotesize
+    \begin{exampleblock}{Value Iteration}
+      1. 於 $s\in\{0,0.0025,\dots,1\}$, $V_0{=}0$。\\
+      2. $Q=\pi+\beta\,V_k(s')$,$V_{k+1}=\max_a Q$,以線性插值取 $V_k(s')$。\\
       3. $\lVert V_{k+1}-V_k\rVert_\infty<10^{-8}$ 停止。
     \end{exampleblock}
   \end{columns}
-  \vskip0.2em
-  {\footnotesize 本模型於 \hl{406 次迭代}收斂。VI 在整個 $[0,1]$ 同步求出最適策略函數 $a^*(\cdot)$,不需指定起點(起點僅用於事後模擬路徑)。}
 \end{frame}
 
 % =====================================================================
 \section{求解結果與解讀}
 % =====================================================================
 \begin{frame}{求解結果－三段策略地圖}
-  最適策略 $a^*(s)$ 在強化模型下仍呈\textbf{乾淨的三段結構}:
+  最適策略 $a^*(s)$ 在模型下呈現\textbf{三段結構}:
   \begin{center}
   \begin{tikzpicture}[x=11cm,y=1cm]
     \fill[ottred](0,0)rectangle(0.107,0.7);\fill[ottteal](0.107,0)rectangle(0.535,0.7);\fill[ottdark](0.535,0)rectangle(1,0.7);
@@ -354,41 +339,39 @@
   \centering\footnotesize
   \begin{tabular}{l|l|l}
     區間 & 策略 & 經濟意義\\\hline
-    $s\in[0,0.11]$ & \textcolor{ottred}{\textbf{Trans-Acq}} & 極早期試水;SVOD 短期虧損,TVOD 低門檻拉新\\
-    $s\in[0.11,0.54]$ & \textcolor{ottteal}{\textbf{Sub-Acq}} & 成長期;滲透定價,Bass 口碑 $\kappa_\alpha s$ 加速獲取\\
-    $s\in[0.54,1]$ & \textcolor{ottdark}{\textbf{Sub-Ret}} & 成熟期;留存網路效應 $\kappa_\rho s$ 與規模成本使廠商守成\\
+    $s\in[0,0.11]$ & \textcolor{ottred}{\textbf{Trans-Acq}} & 新進市場;SVOD 短期虧損,TVOD 低門檻拉新客\\
+    $s\in[0.11,0.54]$ & \textcolor{ottteal}{\textbf{Sub-Acq}} & 成長期; 透過 Acq 搶佔市場, SVOD 增加利潤\\
+    $s\in[0.54,1]$ & \textcolor{ottdark}{\textbf{Sub-Ret}} & 成熟期; Ret 的網路外部性 $\kappa_\rho s$ 與規模成本使廠商保持策略\\
   \end{tabular}
   \vskip0.2em
-  {\footnotesize $(T,R)$ 從未被選 —— TVOD 較低人均收入使留存投資在任何 $s$ 皆不划算。}
+  {\footnotesize $(T,R)$ 在任何 $s$ 都不會是最佳策略 — TVOD 較低人均收入使 Ret 策略在任何 $s$ 皆不划算。}
 \end{frame}
 
-\begin{frame}{求解結果－穩態與網路效應}
+\begin{frame}{求解結果－Steady State}
   \begin{columns}[T]
-    \column{0.6\textwidth}\centering
+    \column{0.62\textwidth}\centering
       \includegraphics[width=\linewidth]{fig_value_paths.png}
-    \column{0.4\textwidth}\footnotesize
-      \begin{alertblock}{網路效應推升穩態}
-        無外部性 baseline:$s_\infty\approx\textbf{0.505}$。\\
-        強化模型:$s_\infty\approx\mhl{0.744}$(\textbf{+47\%})。
+    \column{0.38\textwidth}\footnotesize
+      25 條由不同起點 $s_0\in[0.02,0.98]$ 出發的模擬路徑\textbf{全部收斂到同一點}。
+      \begin{alertblock}{唯一且全域收斂}
+        $s_\infty\approx\mhl{0.744}$,\textbf{與起點無關}(無路徑相依)。
       \end{alertblock}
-      $\rho$、$\alpha$ 的網路外部性使 $V(s)$ 整體\textbf{上移且更凸},廠商更願在早期投資市佔。\\[0.4em]
-      \textbf{Incumbent advantage:}三類廠商都收斂到同一 $s_\infty$,但 25 年折現利潤相差約 \hl{23\%}(Newcomer 115.3 / Mid 124.3 / Incumbent 141.8)。
   \end{columns}
 \end{frame}
 
-\begin{frame}{求解結果－轉移機制與 Bass 加速}
+\begin{frame}{求解結果－轉移機制與在位者優勢}
   \begin{columns}[T]
-    \column{0.58\textwidth}\centering
+    \column{0.56\textwidth}\centering
       \includegraphics[width=\linewidth]{fig_buildingblocks.png}
-    \column{0.42\textwidth}\footnotesize
-      \textbf{左圖} 三個轉移成分:
+    \column{0.44\textwidth}\footnotesize
+      轉移 $s'=\rho(s)\,s+\alpha(s)(1-s)$ 可拆成兩股流入:
       \begin{itemize}\itemsep1pt
-        \item 留存流入 $\rho(s)s$ 隨 $s$ 凸增(網路外部性)。
-        \item 獲取流入 $\alpha(s)(1-s)$ 呈 \textbf{Bass 鐘形}:口碑先加速、池子飽和後下降。
+        \item \textbf{留存流入} $\rho(s)\,s$:隨 $s$ \textbf{凸增},由留存網路外部性 $\kappa_\rho$ 放大。
+        \item \textbf{獲取流入} $\alpha(s)(1-s)$:隨 $s$ \textbf{遞減} —— 潛在客群 $(1-s)$ 枯竭壓過 $\kappa_\alpha$ 提升的人均獲取率。
       \end{itemize}
-      \vskip0.3em
-      \begin{exampleblock}{非顯然結果}
-        $\kappa_\alpha$(口碑)越大,\textbf{新進者追趕越快} $\Rightarrow$ incumbent advantage 由 $\sim$29\% 降到 $\sim$19\%。網路效應對留存有利於既有者、對獲取卻幫助挑戰者。
+      \vskip0.2em
+      \begin{exampleblock}{非顯然結果:兩種網路外部性方向相反}
+        留存端 $\kappa_\rho$ \textbf{鞏固既有者}(穩態升、市場集中);獲取端 $\kappa_\alpha$ 反而\textbf{助挑戰者追趕}($\kappa_\alpha$ 由 $0\!\to\!0.6$,incumbent advantage 由 $\sim$28\% 降至 $\sim$16\%)。
       \end{exampleblock}
   \end{columns}
 \end{frame}
