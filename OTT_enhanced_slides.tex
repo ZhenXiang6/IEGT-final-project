@@ -534,8 +534,8 @@
     \vskip0.5em
     \begin{tikzpicture}[font=\scriptsize,
        box/.style={draw,rounded corners=3pt,minimum width=2.3cm,minimum height=1cm,align=center,line width=0.9pt}]
-      \node[box,fill=rblue!12,draw=rblue] (N) at (0,1.7) {大公司\\$s_N$};
-      \node[box,fill=ottred!12,draw=ottred] (C) at (4.6,1.7) {新進公司\\$s_C$};
+      \node[box,fill=rblue!12,draw=rblue] (N) at (0,1.7) {大公司\\$s_N$(黏)};
+      \node[box,fill=ottred!12,draw=ottred] (C) at (4.6,1.7) {新進公司\\$s_C$(游移)};
       \node[box,fill=black!7,draw=black!45,minimum height=0.75cm] (U) at (2.3,-0.35) {未訂閱池 $U$};
       \draw[-{Stealth[length=2mm]},ottred,line width=1.1pt] (N) to[bend left=14] node[midway,above,font=\tiny,text=ottred]{挖 $\omega_N s_N$} (C);
       \draw[-{Stealth[length=2mm]},ottred,line width=1.1pt] (C) to[bend left=14] node[midway,below,font=\tiny,text=ottred]{挖 $\omega_C s_C$} (N);
@@ -547,13 +547,14 @@
     \column{0.5\textwidth}\footnotesize
     \begin{block}{設定}
       \begin{itemize}\itemsep2pt
-        \item 兩家每期都有「游移客」$W{=}\omega s$ 可被對方挖;\textbf{大公司的比例較高} $\omega_N{=}0.15>\omega_C{=}0.075$。
-        \item 兩家也從\textbf{未訂閱池}拉新;大公司跌破 0.54 由留存轉獲取。
+        \item 每期都有「游移客」$W{=}\omega s$ 可被對方挖;\textbf{新進公司客較游移} $\omega_C{=}0.15 > \omega_N{=}0.05$(大公司客\textbf{較黏})。
+        \item 兩家也從\textbf{未訂閱池}拉新;大公司守留存、跌破 0.54 轉獲取。
       \end{itemize}
     \end{block}
     \vskip0.2em
-    {\scriptsize $s_N'{=}(\rho_N{+}0.10)s_N+\alpha_N U-\alpha_C\omega_N s_N+\alpha_N\omega_C s_C$\par
-     $s_C'{=}\rho_C s_C+\alpha_C U-\alpha_N\omega_C s_C+\alpha_C\omega_N s_N$}
+    {\scriptsize $s_N'{=}\rho_N s_N+\alpha_N U-\alpha_C\omega_N s_N+\alpha_N\omega_C s_C$\par
+     $s_C'{=}\rho_C s_C+\alpha_C U-\alpha_N\omega_C s_C+\alpha_C\omega_N s_N$\par
+     {\color{ottgray}($\omega$ 即「對手專屬的流失率」,有效留存 $=\rho-\alpha_{\text{對手}}\omega$)}}
   \end{columns}
 \end{frame}
 
@@ -562,14 +563,14 @@
     \column{0.62\textwidth}\centering
       \includegraphics[width=\linewidth]{fig_ext3.png}
     \column{0.38\textwidth}\footnotesize
-    \begin{block}{$\omega_N{=}0.15$}
+    \begin{block}{$\omega_N{=}0.05,\ \omega_C{=}0.15$}
       \begin{itemize}\itemsep3pt
-        \item 大公司 $0.7\!\to\!\mathbf{0.54}$、新進公司 $0\!\to\!\mathbf{0.31}$(\textbf{被侵蝕但仍領先})。
-        \item \textbf{新進公司策略}:市佔小、\textbf{全程獲取}—TA$\to$ SA ;大公司則一直SR不變。
+        \item 大公司 $0.7\!\to\!\mathbf{0.44}$、新進公司 $0\!\to\!\mathbf{0.31}$(\textbf{被侵蝕但仍領先},gap ${\sim}0.13$)。
+        \item \textbf{策略}:新進\textbf{全程獲取}(TA$\to$SA);大公司守\textbf{留存 SR}、跌破 0.54 轉獲取反擊。
       \end{itemize}
     \end{block}
-    \begin{exampleblock}{游移比例($\omega_N$)的變化}
-      游移比例越高、差距越小:\\$\omega_N{=}0.05$ gap 0.58、$0.15$ gap 0.24、$0.30$ 幾乎平手。
+    \begin{exampleblock}{黏性就是護城河}
+      若大公司客也變游移($\omega_N\uparrow$):$\omega_N{=}0.05$ 領先、$0.15{=}$新進時\textbf{平手}、再高\textbf{被反超}。
     \end{exampleblock}
   \end{columns}
 \end{frame}
@@ -577,13 +578,13 @@
 \begin{frame}{延伸模型2:解讀}
   \footnotesize
   \begin{itemize}\itemsep5pt
-    \item 大公司較高的游移比例讓新進挖到客、站穩腳跟。
-    \item 游移比例($\omega_N$) 越高,領先差距越小。
-    \item 沒有游移($\omega{=}0$)新進無法搶佔市場($\sim$0.06)。
+    \item 大公司客低 $\omega$、新進客高 $\omega$;大公司\textbf{反挖}新進的游移客,守住領先。
+    \item 一旦大公司\textbf{失去黏性}($\omega_N$ 升到 $\approx\omega_C$),領先就消失。
+    \item 沒有游移($\omega{=}0$)新進幾乎打不進來($\sim$0.06)。
   \end{itemize}
   \vskip0.3em
   \begin{alertblock}{與現實的觀察和連接}\footnotesize
-    解釋 Netflix 為何死守\textbf{降低顧客游移}(原創內容、個人化)，市佔率不應為公司所注重的唯一指標，仍需注重降低顧客的游移比例。
+    解釋 Netflix 為何死守\textbf{降低顧客游移}(原創內容、個人化);市佔率不是唯一指標,更要看顧客的游移率。
   \end{alertblock}
 \end{frame}
 
