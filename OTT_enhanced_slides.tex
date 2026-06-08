@@ -204,6 +204,24 @@
 \end{frame}
 
 % =====================================================================
+\begin{frame}{文獻回顧－文獻缺口與本研究貢獻}
+  \begin{columns}[T]
+    \column{0.5\textwidth}\footnotesize
+    \begin{block}{文獻缺口}
+      \begin{itemize}\itemsep4pt
+        \item \textbf{研究流一(定價維度):}探討 SVOD vs TVOD 收費模式,但多數\textbf{未同時納入獲客／留客}決策。
+        \item \textbf{研究流二(客群維度):}最佳化 Acquisition vs Retention,但通常\textbf{假設收費模式固定}。
+      \end{itemize}
+    \end{block}
+    \column{0.5\textwidth}\footnotesize
+    \begin{exampleblock}{本研究貢獻}
+      將\textbf{定價}與\textbf{客群}兩維度納入\textbf{同一個 Bellman 模型},並讓收費模式 $P$ \textbf{同時影響}留存 $\rho$ 與獲取 $\alpha$。\\[3pt]
+      求解得到\textbf{隨市佔率 $s$ 變化的策略地圖} $a^*(s)$ —— 兩維度的動態交互正是過去文獻的交集缺口。
+    \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+% =====================================================================
 \section{模型建構}
 % =====================================================================
 \begin{frame}{模型建構－環境設定}
@@ -455,6 +473,18 @@
   \begin{exampleblock}{方法論貢獻}
     在同一 Bellman 框架下整合\hl{收費模式選擇}與\hl{客群策略},並讓收費模式 $P$ 同時影響 $\rho$ 與 $\alpha$;所有函數形式皆有\textbf{經查證文獻}支撐(Bass 擴散 $\times$ 網路外部性 $\times$ 規模成本)。
   \end{exampleblock}
+\end{frame}
+
+\begin{frame}{結論－管理意涵}
+  \footnotesize
+  \begin{itemize}\itemsep5pt
+    \item \textcolor{ottred}{\textbf{新進期(低 $s$):}}不宜一開始要求高承諾 —— 以\textbf{單部租購(TVOD)作為試水工具},低門檻先拉新。
+    \item \textcolor{ottteal}{\textbf{成長期(中 $s$):}}不能只追求留存,否則\textbf{缺乏新客流入};須維持獲客動能。
+    \item \textcolor{ottdark}{\textbf{成熟期(高 $s$):}}應\textbf{逐步將資源移向留存},但\textbf{不能完全停止獲客},以抵銷自然流失。
+    \item \textcolor{rblue}{\textbf{網路效應強時:}}\textbf{早期跨越臨界規模}至關重要;落後臨界門檻恐困於低市佔均衡(路徑相依)。
+  \end{itemize}
+  \vskip0.5em
+  {\footnotesize\color{black!60} 四點分別對應策略地圖三段($a^*(s)$)與留存網路外部性的臨界／雙穩態結果。}
 \end{frame}
 
 \begin{frame}[plain]
