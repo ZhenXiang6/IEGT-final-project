@@ -43,10 +43,16 @@ The model is described by a Bellman equation and solved numerically via **value 
 ├── 03_solve_model.py            # Baseline model (value iteration)
 ├── 04_extension1.py             # Extension 1: network externality & multiple steady states
 ├── 05_competitor_fixed.py       # Competitor extension: fixed Netflix market share
+├── 08_continuous_effort.py      # Extension 2: continuous effort allocation e ∈ [0,1]
+├── 07_stackelberg_game.py       # Extension 4: Stackelberg duopoly (Markov Perfect Equilibrium)
+├── 06_entry_deterrence.py       # Extension 3: entry deterrence threshold V(0) = 0
 ├── OTT_strategy_slides.tex      # Beamer presentation (XeLaTeX, Traditional Chinese)
 ├── OTT_strategy_slides.pdf      # Compiled slide deck (29 pages, royal-blue + grid theme)
 ├── extension1_multi_steady.png  # Figure: bifurcation / phase / path-dependence
 ├── competitor_fixed.png         # Figure: challenger value & policy under fixed s_N
+├── continuous_effort.png        # Figure: e*(s) curves, V comparison, value gain
+├── stackelberg_game.png         # Figure: strategy maps (L & C), phase portrait, time series
+├── entry_deterrence.png         # Figure: V(0) vs s_N, steady-state compression, NPV decomposition
 └── README.md
 ```
 
@@ -61,6 +67,15 @@ python 04_extension1.py
 
 # Competitor extension
 python 05_competitor_fixed.py
+
+# Extension 2: continuous effort allocation
+python 08_continuous_effort.py
+
+# Extension 4: Stackelberg duopoly
+python 07_stackelberg_game.py
+
+# Extension 3: entry deterrence threshold
+python 06_entry_deterrence.py
 ```
 
 Dependencies: `numpy`, `matplotlib`
@@ -217,6 +232,89 @@ Netflix's market dominance forces challengers into retention-focused strategies 
 **Finding 3 — Ceiling effect on incumbent advantage.** As `s_N` grows, the maximum achievable `s_C` shrinks, compressing the range over which incumbent advantage accumulates. In highly saturated markets (`s_N = 0.50`), the challenger's value function ceiling is roughly half that of an uncontested market.
 
 Output: `competitor_fixed.png` (value function + policy strip for each `s_N` scenario)
+
+---
+
+### 4. Extension 2 — Continuous Effort Allocation
+
+The baseline forces a binary choice C ∈ {A, R}. This extension replaces it with a continuous retention effort `e ∈ [0, 1]`, where `(1 − e)` is acquisition effort:
+
+```
+ρ(P, e) = ρ_base(P) + δ_R · e^γ
+α(P, e) = α_base(P) + δ̃_A · (1 − e)^γ
+cost(e)  = (1 − e) · c_A + e · c_R
+```
+
+`γ = 1` (linear) → objective linear in `e` → optimal always corner → degenerates to binary. `γ < 1` (concave) → diminishing marginal returns → interior solution → firm mixes A and R simultaneously.
+
+**Findings (γ = 0.5):** `e*(s)` smoothly increasing (50/50 at s ≈ 0.535); `V_cont ≥ V_disc` everywhere (avg +12.87, max +14.0 at s ≈ 0.585); γ sweep confirms 0% interior solutions at γ=1 vs ~92% at γ=0.25.
+
+Output: `continuous_effort.png`
+
+---
+
+### 5. Extension 4 — Stackelberg Duopoly (Markov Perfect Equilibrium)
+
+The baseline is a single-firm model. This extension introduces a second firm and game-theoretic interaction: a **Stackelberg duopoly** where the Leader (L, Netflix-like incumbent) moves first each period, and the Follower (C, Challenger) observes L's action and best responds.
+
+**State:** `(s_L, s_C) ∈ {s_L + s_C ≤ 1}` — a 2D state space on a 41×41 grid.
+
+**Transition:**
+```
+available = 1 - s_L - s_C
+s_L' = ρ_L(a_L)·s_L + [α_L/(α_L+α_C)]·available − γ·[a_C=Acq]·s_L
+s_C' = ρ_C(a_C)·s_C + [α_C/(α_L+α_C)]·available + γ·[a_C=Acq]·s_L
+```
+The `γ·s_L` term (γ = 0.05) captures poaching: C steals users from L when playing Acq.
+
+**Solution concept:** Markov Perfect Equilibrium via nested Bellman iteration:
+- For each `a_L`, compute C's best response `a_C*(a_L)`
+- L picks `a_L*` anticipating C's response
+- Both value functions iterated until convergence (~200–500 iterations)
+
+**Three key questions:**
+
+**Q1 — Accommodate vs. Deter:** Does L stay in Sub-Ret (defend profit, yield acquisition space) or switch to Sub-Acq (crowd out C) as C grows?
+
+**Q2 — Challenger differentiation:** Does C retreat to Trans-Acq (low-commitment TVOD niche) to avoid direct SVOD competition when L is dominant?
+
+**Q3 — Co-existence equilibrium:** Do paths converge to a stable duopoly `(s_L*, s_C*)` or does one firm dominate?
+
+Run `python 07_stackelberg_game.py` for exact results.
+
+Output: `stackelberg_game.png` (L's strategy map, C's strategy map, phase portrait, time series, value function slice)
+
+---
+
+### 5. Extension 3 — Entry Deterrence Threshold
+
+Extension 05 asks *how* a challenger should compete given Netflix's fixed market share. This extension asks the prior question: **should the challenger enter at all?**
+
+We define the entry deterrence condition as `V(0; s_N) < 0`: even under the globally optimal policy, the challenger's discounted NPV from zero market share is negative. We sweep `s_N ∈ [0, 0.95]` and locate `s_N*` where `V(0)` crosses zero.
+
+**Structure of V(0):**
+
+At `s_C = 0`, stage profit is always negative (`π = revenue × 0 − cost = −c_A`). Entry is only rational if the discounted future profits from growing market share outweigh the initial burn. As `s_N` rises, three forces simultaneously compress V(0):
+
+1. **Ceiling compression**: steady-state `s*` shrinks proportionally, reducing long-run revenue
+2. **Path compression**: the growth trajectory from 0 to `s*` shortens, generating less cumulative surplus
+3. **Entry cost unchanged**: `c_A = 1.2` per period regardless of market size
+
+**Key result — entry deterrence threshold `s_N*`:**
+
+Run `python 06_entry_deterrence.py` to compute the exact value. The script reports `s_N*` and produces a three-panel figure:
+
+- Panel 1: `V(0)` vs `s_N` with entry-viable / deterred zones shaded
+- Panel 2: steady-state `s*` vs market ceiling `(1 − s_N)`
+- Panel 3: exact `V(0)` versus a perpetuity approximation `π_ss / (1 − β)` — shows how much of the NPV gap comes from the growth path vs. the steady-state level
+
+**Economic interpretation:**
+
+The threshold `s_N*` is a structural entry barrier arising purely from market-space compression — not from predatory pricing, exclusionary contracts, or strategic deterrence by Netflix. This formalizes a stronger claim than Extension 05: incumbents with sufficient market share do not need to *act* to deter entry; the market geometry does it for them.
+
+This maps to Bain's (1956) concept of innocent entry barriers, extended to a dynamic setting: the barrier is not a sunk cost but a negative-NPV condition imposed by the state space itself.
+
+Output: `entry_deterrence.png`
 
 ---
 

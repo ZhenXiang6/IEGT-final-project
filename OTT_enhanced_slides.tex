@@ -485,107 +485,125 @@
 % =====================================================================
 \section{延伸模型與結果}
 % =====================================================================
-\begin{frame}{延伸模型1：臨界規模}
-  {\footnotesize 在特定外生參數下,同一公司、同一套策略會走向\textbf{兩種長期結局},全看\textbf{起點規模}:\par}
-  \vskip0.4em
-  \begin{block}{觸發條件(兩者須同時)}\footnotesize
-    \begin{itemize}\itemsep3pt
-      \item \textbf{基礎留存 $\rho_0$ 低}(${\approx}0.3$):用戶易流失。
-      \item \textbf{留存網路外部性 $\kappa_\rho$ 強}(${\gtrsim}0.5$):\textbf{用戶越多留存率越高}。
-    \end{itemize}
-  \end{block}
-  \vskip0.45em
-  \begin{center}
-  \begin{tikzpicture}[font=\scriptsize]
-    \draw[line width=1pt,-{Stealth[length=2.4mm]}] (0,0)--(10.5,0) node[right]{市佔 $s$};
-    \foreach \x in {0,2.5,5,7.5,10}\draw[black!40](\x,-0.07)--(\x,0.07);
-    \fill[rblue](5.33,0)circle(3pt); \node[below=2pt,rblue,font={\scriptsize\bfseries}]at(5.33,-0.06){0.53};
-    \fill[rblue](9.4,0)circle(3pt); \node[below=2pt,rblue,font={\scriptsize\bfseries}]at(9.4,-0.06){0.93};
-    \draw[ottred,line width=1.4pt](7.89,0.2)--(7.89,-0.2);
-    \node[above=1pt,ottred,font={\scriptsize\bfseries}]at(7.89,0.22){臨界規模 0.79};
-    \draw[ottteal,-{Stealth[length=1.8mm]},line width=1pt](3.0,0.45)--(4.4,0.45);
-    \draw[ottteal,-{Stealth[length=1.8mm]},line width=1pt](7.2,0.45)--(6.0,0.45);
-    \draw[ottteal,-{Stealth[length=1.8mm]},line width=1pt](8.5,0.45)--(9.1,0.45);
-  \end{tikzpicture}
-  \end{center}
-  \vskip0.15em
-  {\footnotesize\centering Starting State $s_0<0.79\Rightarrow$ 0.53;\quad $s_0>0.79\Rightarrow$ \textbf{0.93}。\par}
-\end{frame}
-
-\begin{frame}{延伸模型1：解讀}
-  \begin{block}{結果詮釋}\footnotesize
-    \begin{itemize}\itemsep4pt
-      \item \textbf{小規模時}:用戶少、基礎留存率低 $\to$ 卡在低市佔。
-      \item \textbf{衝過臨界規模}:黏性壓過流失、網路外部性 $\to$ 近乎獨佔。
-    \end{itemize}
-  \end{block}
-  \vskip0.5em
-  \begin{alertblock}{與現實的觀察和連接}\footnotesize
-    \begin{itemize}\itemsep4pt
-      \item 強網路效應平台的\textbf{贏者全拿}
-      \item 串流大戰（或者是所有的市場）初期應投入資源搶佔市場(搶先過臨界規模)。
-    \end{itemize}
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}{延伸模型2：競爭模型}
-  \begin{columns}[T]
-    \column{0.5\textwidth}\centering
-    \vskip0.5em
-    \begin{tikzpicture}[font=\scriptsize,
-       box/.style={draw,rounded corners=3pt,minimum width=2.3cm,minimum height=1cm,align=center,line width=0.9pt}]
-      \node[box,fill=rblue!12,draw=rblue] (N) at (0,1.7) {大公司\\$s_N$(黏)};
-      \node[box,fill=ottred!12,draw=ottred] (C) at (4.6,1.7) {新進公司\\$s_C$(游移)};
-      \node[box,fill=black!7,draw=black!45,minimum height=0.75cm] (U) at (2.3,-0.35) {未訂閱池 $U$};
-      \draw[-{Stealth[length=2mm]},ottred,line width=1.1pt] (N) to[bend left=14] node[midway,above,font=\tiny,text=ottred]{挖 $\omega_N s_N$} (C);
-      \draw[-{Stealth[length=2mm]},ottred,line width=1.1pt] (C) to[bend left=14] node[midway,below,font=\tiny,text=ottred]{挖 $\omega_C s_C$} (N);
-      \draw[-{Stealth[length=1.8mm]},ottteal] (U)--(N) node[pos=0.55,left=-2pt,font=\tiny,text=ottteal]{$\alpha_N U$};
-      \draw[-{Stealth[length=1.8mm]},ottteal] (U)--(C) node[pos=0.55,right=-2pt,font=\tiny,text=ottteal]{$\alpha_C U$};
-    \end{tikzpicture}
-    \par\vskip0.5em
-    {\scriptsize\color{ottgray}\textbf{圖例}:\textcolor{ottred}{紅}$=$互挖對方游移客、\textcolor{ottteal}{綠}$=$從未訂閱池拉新。}
-    \column{0.5\textwidth}\footnotesize
-    \begin{block}{設定}
-      \begin{itemize}\itemsep2pt
-        \item 每期都有「游移客」$W{=}\omega s$ 可被對方挖;\textbf{新進公司客較游移} $\omega_C{=}0.15 > \omega_N{=}0.05$(大公司客\textbf{較黏})。
-        \item 兩家也從\textbf{未訂閱池}拉新;大公司守留存、跌破 0.54 轉獲取。
-      \end{itemize}
-    \end{block}
-    \vskip0.2em
-    {\scriptsize $s_N'{=}\rho_N s_N+\alpha_N U-\alpha_C\omega_N s_N+\alpha_N\omega_C s_C$\par
-     $s_C'{=}\rho_C s_C+\alpha_C U-\alpha_N\omega_C s_C+\alpha_C\omega_N s_N$\par
-     {\color{ottgray}($\omega$ 即「對手專屬的流失率」,有效留存 $=\rho-\alpha_{\text{對手}}\omega$)}}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{延伸模型2：結果}
-  \begin{columns}[T]
-    \column{0.62\textwidth}\centering
-      \includegraphics[width=\linewidth]{fig_ext3.png}
-    \column{0.38\textwidth}\footnotesize
-    \begin{block}{$\omega_N{=}0.05,\ \omega_C{=}0.15$}
-      \begin{itemize}\itemsep3pt
-        \item 大公司 $0.7\!\to\!\mathbf{0.44}$、新進公司 $0\!\to\!\mathbf{0.31}$(\textbf{被侵蝕但仍領先},gap ${\sim}0.13$)。
-        \item \textbf{策略}:新進\textbf{全程獲取}(TA$\to$SA);大公司守\textbf{留存 SR}、跌破 0.54 轉獲取。
-      \end{itemize}
-    \end{block}
-    \begin{exampleblock}{游移率對公司的影響}
-      若大公司客也變游移($\omega_N\uparrow$):$\omega_N{=}0.05$ 領先、$0.15{=}$新進時\textbf{平手}、再高\textbf{被反超}。
-    \end{exampleblock}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{延伸模型2:解讀}
-  \footnotesize
-  \begin{itemize}\itemsep5pt
-    \item 大公司客低 $\omega$、新進客高 $\omega$;大公司\textbf{反挖}新進的游移客,守住領先。
-    \item 一旦大公司\textbf{失去黏性}($\omega_N$ 升到 $\approx\omega_C$),領先就消失。
-    \item 沒有游移($\omega{=}0$)新進幾乎打不進來($\sim$0.06)。
-  \end{itemize}
+\begin{frame}{延伸一：多重穩定態與路徑依賴}
+  {\footnotesize Baseline 單一穩態：全部起點收斂到唯一 $s\approx0.505$。在留存率引入\textbf{留存網路外部性}：\par}
+  \[ \rho(P,C,s)=\rho_0+\delta_P+\delta_C+\kappa\, s \]
+  {\footnotesize 探討不同網路外部性 $\kappa$ 對穩定態的改變：\par}
   \vskip0.3em
-  \begin{alertblock}{與現實的觀察和連接}\footnotesize
-    解釋 Netflix 為何死守\textbf{降低顧客游移}(原創內容、個人化);市佔率不是唯一指標,更要看顧客的游移率。
+  \centering\small
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabular}{c|c|l}
+    \textbf{網路外部性 $\kappa$} & \textbf{穩態數量} & \textbf{穩態市佔率}\\\hline
+    0.10 & 1 & 0.411\\
+    0.14 & 1 & 0.423\\
+    \textcolor{rblue}{\textbf{0.16}} & \textcolor{rblue}{\textbf{3}} & \textcolor{rblue}{\textbf{0.434,\ 0.899,\ 1.000}}\\
+    \textcolor{rblue}{\textbf{0.18}} & \textcolor{rblue}{\textbf{3}} & \textcolor{rblue}{\textbf{0.466,\ 0.766,\ 1.000}}\\
+    0.20 & 1 & 1.000\\
+    0.30 & 1 & 1.000\\
+  \end{tabular}
+\end{frame}
+
+\begin{frame}{延伸一：解讀}
+  \begin{alertblock}{臨界質量(Critical Mass)與路徑依賴}\footnotesize
+    當留存網路外部性夠強($\kappa=0.16$--$0.18$),市場出現\textbf{低穩態}與\textbf{高穩態}同時存在。\\[3pt]
+    $s_0 <$ 不穩定臨界點 $\Rightarrow$ 困在低均衡；$s_0 >$ 臨界點 $\Rightarrow$ 收斂至高均衡(市場獨佔)。
   \end{alertblock}
+  \vskip0.4em
+  \begin{block}{三個 insight}\footnotesize
+    \begin{itemize}\itemsep4pt
+      \item \textbf{臨界質量}:小平台可能被困在低均衡，即使高均衡存在。
+      \item \textbf{路徑依賴}:誰先搶到市佔決定長期結果；Netflix 早期燒錢衝用戶數，本質上是在跨越臨界點、鎖定高穩態。
+      \item \textbf{策略非對稱}:大平台只需 Sub-Ret 守住；小平台需要「大推力」跨越臨界點。
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{延伸二：連續 Effort 配置 (1/2)}
+  {\footnotesize 設定廠商可以不用全部在做獲取或保留，提供如 30\% 保留、70\% 獲取的混合。實驗前設定 $\gamma=0.5$（邊際遞減），最佳解 $e^*$ 在 $[0,1]$ 之間。\par}
+  \vskip0.2em
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{block}{連續控制公式}\footnotesize
+      \[ \rho(P,e)=\rho_{\text{base}}(P)+\delta_R\cdot e^{\gamma} \]
+      \[ \alpha(P,e)=\alpha_{\text{base}}(P)+\tilde\delta_A\cdot(1-e)^{\gamma} \]
+      \[ \text{cost}(e)=(1-e)\cdot c_A+e\cdot c_R \]
+    \end{block}
+    \begin{exampleblock}{關鍵條件}\footnotesize
+      $\gamma<1$（凹性）$\Rightarrow$ 邊際遞減 $\Rightarrow$ 最優混合策略存在\\[2pt]
+      $\gamma=1$（線性）$\Rightarrow$ 退化回二元選擇
+    \end{exampleblock}
+    \column{0.5\textwidth}\footnotesize
+    Base Model：
+    \[ C(a)=\begin{cases}1.2 & a=A\\0.8 & a=R\end{cases} \]
+    \[ \pi(s,a)=\underbrace{R(s,P)}_{\text{每用戶收入}}\cdot s - \underbrace{C(C)}_{\text{行銷成本}} \]
+    {\footnotesize 策略概念上獲取可以晚一點再轉向保留。最後發現交差點在 $s\approx0.535$。}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{延伸二：連續 Effort 配置 (2/2)}
+  \centering
+  {\footnotesize 交差點在 $s\approx0.535$\par}\vskip0.4em
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{c|c|c|c|c}
+    $s$ & $P^*$ & $e^*$ & \%Ret & \%Acq\\\hline
+    0.05 & T & 0.00 & 0\%  & 100\%\\
+    0.10 & S & 0.01 & 1\%  & 99\%\\
+    0.30 & S & 0.12 & 12\% & 88\%\\
+    0.50 & S & 0.43 & 43\% & 57\%\\
+    0.60 & S & 0.63 & 63\% & 37\%\\
+    0.70 & S & 0.80 & 80\% & 20\%\\
+    0.90 & S & 0.98 & 98\% & 2\%\\
+  \end{tabular}
+  \vskip0.5em
+  \begin{block}{}\footnotesize
+    連續控制平均增益 $+12.87$，中段最大 $+14.0$（$s\approx0.585$）——廠商在過渡帶最需要精細配置資源。
+  \end{block}
+\end{frame}
+
+\begin{frame}{延伸三：Stackelberg 競爭賽局}
+  {\footnotesize 引入第二家廠商，Leader（大型在位者）先動，Follower（挑戰者）觀察後最優反應。狀態空間 $(s_L, s_C)$，$s_L+s_C\le1$。\par}
+  \vskip0.3em
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{block}{轉移（對稱搶客）}\footnotesize
+      \begin{align*}
+        s_L'&=\rho_L s_L+\alpha_L(1{-}s_L{-}s_C)-\gamma s_L\cdot\mathbf{1}_{C=A}^{(\text{Fol})}\\
+        s_C'&=\rho_C s_C+\alpha_C(1{-}s_L{-}s_C)+\gamma s_L\cdot\mathbf{1}_{C=A}^{(\text{Fol})}
+      \end{align*}
+      {\scriptsize $\gamma=0.05$：Follower 採 Acq 時從 Leader 搶走比例客戶。}
+    \end{block}
+    \begin{exampleblock}{求解方式}\footnotesize
+      對每個 $a_L$，求 Follower 最優反應 $a_C^*(a_L)$；Leader 預期此反應後選最大 $Q_L$。
+    \end{exampleblock}
+    \column{0.5\textwidth}\footnotesize
+    \begin{block}{均衡結果（四個起點全收斂）}
+      \centering\small
+      \renewcommand{\arraystretch}{1.2}
+      \begin{tabular}{l|c|c}
+        起點 & 均衡 $(s_L^*, s_C^*)$ & 總市佔\\\hline
+        (0.05, 0.05) & (0.336, 0.336) & 0.671\\
+        (0.50, 0.10) & (0.336, 0.336) & 0.671\\
+        (0.10, 0.50) & (0.336, 0.336) & 0.671\\
+        (0.30, 0.30) & (0.336, 0.336) & 0.671\\
+      \end{tabular}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{延伸三：解讀}
+  \begin{alertblock}{競爭擴張總市場，但壓縮個別廠商}\footnotesize
+    獨佔穩態 $s^*=0.505$；雙寡佔均衡 $s_L+s_C=0.671$（總市場擴大）但每家僅 $0.336$（比獨佔少）。\\[3pt]
+    市場變大了，卻沒有人比獨佔時更好過。
+  \end{alertblock}
+  \vskip0.3em
+  \begin{block}{策略分化：大守小攻}\footnotesize
+    \begin{itemize}\itemsep3pt
+      \item $(s_L,s_C)=(0.6,0.1)$：Leader $\to$ \textbf{Sub-Ret}；Follower $\to$ Sub-Acq
+      \item 只有 Leader 市佔夠高（$\geq0.5$）時才出現「大守小攻」格局
+      \item 對稱參數下 Stackelberg 先動優勢消失：最終兩家市佔相同
+    \end{itemize}
+  \end{block}
+  \vskip0.2em
 \end{frame}
 
 % =====================================================================
