@@ -149,7 +149,7 @@
   \vskip1.0em
   \begin{flushleft}\footnotesize
   \textbf{觀察:}市佔率越高的平台越偏向\hl{訂閱制 + 留存};市佔率低的新進者偏向\hl{租借制／獲取}。
-  Disney+ 隨市佔成長,策略由「獲取」轉向「留存」—  這正是本專案想要探討的\textbf{策略隨 $s$ 演化}。
+  Disney+ 隨市佔成長,策略由「獲取」轉向「留存」。
   \end{flushleft}
 \end{frame}
 
@@ -181,14 +181,12 @@
 \begin{frame}{文獻回顧－ Two Dimension}
   \footnotesize\vskip0.1em
   \textbf{\color{rblue}Dimension 1:收費模式選擇(SVOD vs TVOD)}\par\smallskip
-  \refx{Baek, Jang \& Kim (2024)}{Digital Business}{影片由 TVOD 移入 SVOD,觀看 $+192\%$、TVOD 銷售 $-52\%$(SVOD/TVOD 替代)。}
   \refx{Balasubramanian, Bhattacharya \& Krishnan (2015)}{Marketing Science}{selling(類 SVOD)vs pay-per-use(類 TVOD):獨佔利後者、競爭利前者。}
   \refx{Rao (2015)}{Marketing Science}{無承諾下「買斷(類 TVOD)」與「租用(類 SVOD)」並存最適,間接價格歧視。}
   \smallskip
   \textbf{\color{rblue}Dimension 2:客群策略(Acquisition vs Retention)}\par\smallskip
   \refx{Ben Rhouma \& Zaccour (2018)}{Management Science}{動態規劃最佳化獲取與留存支出(電信 panel 實證)。}
   \refx{Reinartz, Thomas \& Kumar (2005)}{J.\ of Marketing}{獲取/留存資源最適配置隨顧客關係階段而異。}
-  \refx{Datta, Foubert \& Van Heerde (2015)}{JMR}{Free-trail客戶 CLV 低 59\%、存續期約三分之一。}
 \end{frame}
 
 \begin{frame}{文獻回顧－模型模板}
@@ -196,10 +194,9 @@
   \textbf{\color{rblue}\footnotesize 方法論模板:市佔率為狀態 + Bellman/DP 求解}\par\vskip1pt
   \refx{Sethi (1983)}{Optimal Control Appl.\ \& Methods}{市佔率 $x\in[0,1]$ 為狀態、廣告為控制,求 optimal $u^*(x)$}
   \refx{Ovchinnikov, Boulu-Reshef \& Pfeifer (2014)}{Management Science}{顧客基數為狀態、離散時間 Bellman 動態規劃,最適獲取/留存支出隨狀態調整。}
-  \refx{Erickson (1992)}{Management Science}{Lanchester 市佔率動態 $\dot x{=}k_1u_1(1{-}x){-}k_2u_2x$(賽局模板)。}
   \vskip2pt
   \textbf{\color{rblue}\footnotesize 模型機制(網路外部性／規模成本)}\par\vskip1pt
-  \refxn{Katz \& Shapiro (1985)／Klemperer (1987)／Farrell \& Klemperer (2007)}{網路外部性＋轉換成本}
+  \refxn{Farrell \& Klemperer (2007)}{網路外部性＋轉換成本}
   \refxn{Min et al.\ (2016)／Blattberg \& Deighton (1996)}{獲取成本隨市佔率遞增、留存並無此效應。}
 \end{frame}
 
@@ -270,8 +267,8 @@
   \end{center}
   \vskip0.9em
   \begin{itemize}\footnotesize
-    \item 每期先觀察市佔 $s_t$,再從 4 種策略擇一 $(P_t,C_t)$,賺取當期利潤後,經舊客流失與新客加入決定 $s_{t+1}$。
-    \item \textbf{關鍵}:$s_t$ 在當期決策時\textbf{給定},$s_{t+1}$ 則由本期策略\textbf{內生}形成 —— 故須以動態最佳化求解,而非逐期靜態。
+    \item 先觀察市佔 $s_t$,再從 4 種策略擇一 $(P_t,C_t)$,賺取當期利潤後,經舊客流失與新客加入決定 $s_{t+1}$。
+    \item $s_t$ 在當期決策時\textbf{給定},$s_{t+1}$ 則由本期策略\textbf{內生}形成。
   \end{itemize}
 \end{frame}
 
@@ -282,11 +279,9 @@
     \item 第二項 $\alpha(1-s)$:從\textbf{非用戶池} $1-s$ 獲取的新客(獲取率 $\alpha$)。
     \item 以上兩項 ($\rho, \alpha$) 皆會根據 action ($a$) 與 market share ($s$) 而有變動。
   \end{itemize}
-  \vskip0.3em
-  {\footnotesize 下面先以\textbf{水桶比喻}直觀說明,後續再給出 $\rho$、$\alpha$ 與利潤的函數形式}
 \end{frame}
 
-\begin{frame}{模型建構－市佔率怎麼動(水桶比喻)}
+\begin{frame}{模型建構－市佔率以水桶為例}
   \[ \boxed{\,s_{t+1}=\underbrace{\textcolor{rblue}{\rho(a_t)\,s_t}}_{\text{留下的舊客}}\;+\;\underbrace{\textcolor{ottteal}{\alpha(a_t)(1-s_t)}}_{\text{加入的新客}}\,} \]
   \vskip0.4em
   \begin{center}
@@ -304,7 +299,6 @@
   \end{tikzpicture}
   \end{center}
   \vskip0.4em
-  {\footnotesize\centering 直覺:\textbf{獲取}(\textcolor{ottteal}{$\alpha$})把水倒進桶、\textbf{留存}(\textcolor{rblue}{$\rho$})決定漏掉多少,市佔即\textbf{水位}。\par}
 \end{frame}
 
 \begin{frame}{模型建構－顧客留存率(Retention Rate $\rho$)}
@@ -320,8 +314,8 @@
     \column{0.54\textwidth}\footnotesize
     \begin{block}{Strategy $\Rightarrow$ Retention rate}
       \begin{itemize}\itemsep1pt
-        \item $\delta_S{>}0$:訂閱制(S)對 Retention 有額外加成。{\color{ottgray}Iyengar et al.\ 2011:含計次成分費率使留存 $-10.5\%$。}
-        \item $\delta_R{>}0$:留存策略(推薦/原創/防共享)提升留存。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
+        \item $\delta_S{>}0$:訂閱(S)固定月費綁定、flat-rate bias 使客戶黏著 $\to$ 留存高於計次(T)。{\color{ottgray}Lambrecht \& Skiera 2006。}
+        \item $\delta_R{>}0$:留存策略(推薦/原創)提升留存。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
         \item $\kappa_\rho s$:平台越大、內容/推薦/社群效用越高(\textbf{network externality})。{\color{ottgray}Katz--Shapiro 1985。}
       \end{itemize}
     \end{block}
@@ -339,11 +333,11 @@
     \end{tabular}\\[0.4em]
     {\scriptsize $\alpha_0{=}0.10,\ \tilde\delta_T{=}{+}0.05,\ \tilde\delta_A{=}{+}0.15,\ \kappa_\alpha{=}0.20$}
     \column{0.54\textwidth}\footnotesize
-    \begin{block}{Strategy $\Rightarrow$ Aqquisition rate}
+    \begin{block}{Strategy $\Rightarrow$ Acquisition rate}
       \begin{itemize}\itemsep1pt
-        \item $\tilde\delta_T{>}0$:計次(T)無訂閱承諾、門檻低 $\Rightarrow$ 拉新較易。{\color{ottgray}Datta et al.\ 2015(計次/免費試用提高獲取)。}
+        \item $\tilde\delta_T{>}0$:計次(T)無訂閱承諾、門檻低 $\Rightarrow$ 拉新較易,惟其留存較差。{\color{ottgray}Datta et al.\ 2015:免費試用客戶 CLV $-59\%$。}
         \item $\tilde\delta_A{>}0$:獲取策略(行銷/補貼)提高拉新。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
-        \item $\kappa_\alpha s$:平台越大、口碑擴散越快(\textbf{network externality})。{\color{ottgray}Bass 1969。}
+        \item $\kappa_\alpha s$:平台越大、口碑/網路擴散越快(\textbf{network externality})。{\color{ottgray}Godes--Mayzlin 2004。}
       \end{itemize}
     \end{block}
   \end{columns}
@@ -365,13 +359,13 @@
   \[ \boxed{\,R(s,\mathrm S)=p_S,\qquad R(s,\mathrm T)=p_T\,(\varphi_0+\varphi_1\, s),\quad \varphi_1>0\,} \]
   \begin{columns}[T]
     \column{0.5\textwidth}\footnotesize
-    \textbf{SVOD($p_S$)：}flat-rate bias,願為固定月費溢價。
+    \textbf{SVOD($p_S$)：}固定月費。
     \column{0.5\textwidth}\footnotesize
     \textbf{TVOD($p_T(\varphi_0{+}\varphi_1 s)$)：}平台越大、受眾越大,人均購買頻率隨 $s$ 上升。
   \end{columns}
   \vskip0.35em
   \[ \boxed{\,C_A(s)=c_A\,(1+\lambda_A\, s),\qquad C_R(s)=c_R\,(1+\lambda_R\, s),\qquad \lambda_A>\lambda_R\,} \]
-  {\footnotesize\textbf{$\lambda_A>\lambda_R$:}市場越飽和,獲取(A)成本隨市佔率\textbf{陡升}、留存(R)\textbf{無此規模效應} $\Rightarrow$ 廠商提早轉向留存(Min et al.\ 2016)。\par}
+  {\footnotesize\textbf{$\lambda_A>\lambda_R$:}市場越飽和,獲取(A)成本隨市佔率\textbf{陡升}、留存(R)無此規模效應 (Min et al.\ 2016)。\par}
   \vskip0.3em
   \begin{block}{參數設計}\footnotesize
     收入:$p_S{=}15,\ p_T{=}5,\ \varphi_0{=}\varphi_1{=}0.5$(低 $s$ 時 $R(s,S)>R(s,T)$)。\quad
@@ -379,13 +373,13 @@
   \end{block}
 \end{frame}
 
-\begin{frame}{模型建構－Bellman equation與求解方法}
+\begin{frame}{模型建構－Bellman equation與 Value iteration}
   \[ \boxed{\,V(s)=\max_{a\in\mathcal A}\big\{\,\pi(s,a)+\beta\,V(s'(s,a))\,\big\}\,},\quad s'=\rho(a,s)\,s+\alpha(a,s)(1-s) \]
   \begin{columns}[T]
     \column{0.5\textwidth}\footnotesize
-    \begin{block}{方程式直觀}
-      市佔 $s$ 的最大折現價值 $V(s)$ $=$ \textbf{當期利潤} $\pi(s,a)$ $+$ \textbf{折現續值} $\beta V(s')$;每個 $s$ 在 4 個行動中取最大。\\[3pt]
-      $\beta\in(0,1)$、$\pi$ 連續有界 $\Rightarrow$ Bellman 算子為\textbf{壓縮映射},唯一解 $V^*$ 存在、value iteration 必收斂。
+    \begin{block}{Bellman function}
+      市佔 $s$ 的最大折現價值 $V(s)$ $=$ \textbf{當期利潤} $\pi(s,a)$ $+$ \textbf{折現續值} $\beta V(s')$;每個 $s$ 在 4 個 action 中取 maximum。\\[3pt]
+      $\beta\in(0,1) \Rightarrow$ 唯一解 $V^*$ 存在、value iteration 必收斂。
     \end{block}
     \column{0.5\textwidth}\footnotesize
     \begin{exampleblock}{Value Iteration}
@@ -399,7 +393,7 @@
 % =====================================================================
 \section{求解結果與解讀}
 % =====================================================================
-\begin{frame}{求解結果－三段策略地圖}
+\begin{frame}{求解結果－ 各 Strategy 的優勢區間}
   最適策略 $a^*(s)$ 在模型下呈現\textbf{三段結構}:
   \begin{center}
   \begin{tikzpicture}[x=11cm,y=1cm]
@@ -434,13 +428,34 @@
       \begin{alertblock}{唯一且全域收斂}
         $s_\infty\approx\mhl{0.744}$,\textbf{與起點無關}(無路徑相依)。
       \end{alertblock}
-      \begin{block}{對照現實(無競爭)}\scriptsize
-        $s_\infty\!\approx\!74\%$ 約等於\textbf{前 4-5 大 SVOD 合計}(66\%-78\%);單一 Netflix 受競爭瓜分僅 $\sim$20\%。{\color{ottgray}(JustWatch US 2025Q4)}
+      \begin{block}{與實際情況的對比}\scriptsize
+        $s_\infty\!\approx\!74\%$ 約等於\textbf{前 4-5 大 SVOD 合計}(66\%-78\%)，比照沒有競爭的情況。{\color{ottgray}(JustWatch US 2025Q4)}
       \end{block}
   \end{columns}
 \end{frame}
 
-\begin{frame}{求解結果－轉移機制與在位者優勢}
+\begin{frame}{求解結果－先進者優勢}
+  \begin{columns}[T]
+    \column{0.44\textwidth}\footnotesize
+    \begin{itemize}\itemsep6pt
+      \item 模擬三種起點:\textbf{新進}($s_0{=}0.05$)、\textbf{中型}($0.30$)、\textbf{大型}($0.65$)平台。
+      \item 三者最後\textbf{收斂到同一穩態}($s_\infty\approx0.74$)——最終市佔一樣。
+      \item 但\textbf{起點越高、25 年累積折現利潤越多};先發優勢來自\textbf{早期就坐擁高市佔}的那幾年。
+    \end{itemize}
+    \column{0.56\textwidth}\centering
+    \vskip0.5em
+    {\footnotesize
+    \begin{tabular}{l|ccc}
+      平台類型 & $s_0$ & 25期 $s$ & 25年折現利潤\\\hline
+      \textcolor{ottred}{\textbf{Newcomer}} & 0.05 & 0.744 & 115.3\\
+      \textcolor{ottteal}{\textbf{Mid-share}} & 0.30 & 0.744 & 124.3\\
+      \textcolor{rblue}{\textbf{Incumbent}} & 0.65 & 0.744 & \textbf{141.8}\\
+    \end{tabular}}\\[10pt]
+    {\footnotesize 護城河 $=$ \textbf{絕對折現領先 $\approx 26.5$}(比值 ${\approx}23\%$ 會被折現分母稀釋,以絕對 gap 衡量較準)。}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{求解結果－ 留存/獲取率 隨 $s$ 的效益}
   \begin{columns}[T]
     \column{0.56\textwidth}\centering
       \includegraphics[width=\linewidth]{fig_buildingblocks.png}
@@ -459,9 +474,9 @@
     \renewcommand{\arraystretch}{1.35}
     \begin{tabular}{p{0.46\textwidth}|p{0.48\textwidth}}
       \textbf{模型結果} & \textbf{現實對應}\\\hline
-      低 $s$ 採 Trans-Acq(TVOD 試水) & YouTube Movies、利基平台以單片租購切入\\
-      成長期 Sub-Acq(SVOD + 拉新) & Disney+、Apple TV+ 以訂閱 + 免費試用衝市佔\\
-      成熟期 Sub-Ret(SVOD + 留存) & Netflix:推薦、原創、2022 打擊密碼共享\\
+      低 $s$ 採 Trans-Acq(TVOD + 獲取) & YouTube Movies 以單片租購切入\\
+      成長期 Sub-Acq(SVOD + 獲取) & Disney+、Apple TV+ 以訂閱 + 免費試用衝市佔\\
+      成熟期 Sub-Ret(SVOD + 留存) & Netflix:推薦、原創, Disney+:後期推出 bundle\\
       Steady State $s_\infty$ 為 0.74 & 串流市場「強者恆強」、領導者市佔黏著\\
     \end{tabular}
   \end{block}
@@ -470,68 +485,154 @@
 % =====================================================================
 \section{延伸模型與結果}
 % =====================================================================
-\begin{frame}{延伸模型與結果－網路效應與市場集中}
+\begin{frame}{延伸模型1：臨界規模}
+  {\footnotesize 在特定外生參數下,同一公司、同一套策略會走向\textbf{兩種長期結局},全看\textbf{起點規模}:\par}
+  \vskip0.4em
+  \begin{block}{觸發條件(兩者須同時)}\footnotesize
+    \begin{itemize}\itemsep3pt
+      \item \textbf{基礎留存 $\rho_0$ 低}(${\approx}0.3$):用戶易流失。
+      \item \textbf{留存網路外部性 $\kappa_\rho$ 強}(${\gtrsim}0.5$):\textbf{用戶越多留存率越高}。
+    \end{itemize}
+  \end{block}
+  \vskip0.45em
+  \begin{center}
+  \begin{tikzpicture}[font=\scriptsize]
+    \draw[line width=1pt,-{Stealth[length=2.4mm]}] (0,0)--(10.5,0) node[right]{市佔 $s$};
+    \foreach \x in {0,2.5,5,7.5,10}\draw[black!40](\x,-0.07)--(\x,0.07);
+    \fill[rblue](5.33,0)circle(3pt); \node[below=2pt,rblue,font={\scriptsize\bfseries}]at(5.33,-0.06){0.53};
+    \fill[rblue](9.4,0)circle(3pt); \node[below=2pt,rblue,font={\scriptsize\bfseries}]at(9.4,-0.06){0.93};
+    \draw[ottred,line width=1.4pt](7.89,0.2)--(7.89,-0.2);
+    \node[above=1pt,ottred,font={\scriptsize\bfseries}]at(7.89,0.22){臨界規模 0.79};
+    \draw[ottteal,-{Stealth[length=1.8mm]},line width=1pt](3.0,0.45)--(4.4,0.45);
+    \draw[ottteal,-{Stealth[length=1.8mm]},line width=1pt](7.2,0.45)--(6.0,0.45);
+    \draw[ottteal,-{Stealth[length=1.8mm]},line width=1pt](8.5,0.45)--(9.1,0.45);
+  \end{tikzpicture}
+  \end{center}
+  \vskip0.15em
+  {\footnotesize\centering 起點 $s_0<0.79\Rightarrow$ 0.53;\quad $s_0>0.79\Rightarrow$ \textbf{0.93(獨佔)}。\par}
+\end{frame}
+
+\begin{frame}{延伸模型1：解讀}
+  \begin{block}{為什麼?}\footnotesize
+    \begin{itemize}\itemsep4pt
+      \item \textbf{小規模時}:用戶少、基礎留存率低 $\to$ 卡在低市佔。
+      \item \textbf{衝過臨界規模}:黏性壓過流失、網路外部性 $\to$ 近乎獨佔。
+    \end{itemize}
+  \end{block}
+  \vskip0.5em
+  \begin{alertblock}{與現實的觀察和連接}\footnotesize
+    \begin{itemize}\itemsep4pt
+      \item 強網路效應平台的\textbf{贏者全拿}
+      \item 串流大戰（或者是所有的市場）初期應投入資源搶佔市場(搶先過臨界規模)。
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{延伸模型2：競爭模型}
   \begin{columns}[T]
-    \column{0.54\textwidth}\centering
-      \includegraphics[width=\linewidth]{fig_bifurcation.png}
-    \column{0.46\textwidth}\footnotesize
-      掃描留存網路外部性 $\kappa_\rho$:穩態 $s_\infty$ 由 $\kappa_\rho{=}0$ 的 $\sim$0.60 一路升到 $\kappa_\rho{\ge}0.14$ 的 $\sim$0.94。
-      \begin{alertblock}{Critical Mass / 集中化}
-        留存網路效應越強,市場越\textbf{傾向 winner-take-most}:跨過臨界區後廠商幾乎獨佔。呼應 Rohlfs (1974) 臨界質量、Arthur (1989) lock-in。
-      \end{alertblock}
-      對應現實:串流市場在內容與推薦的網路效應下,長期趨向少數平台高度集中。
+    \column{0.5\textwidth}\centering
+    \vskip0.5em
+    \begin{tikzpicture}[font=\scriptsize,
+       box/.style={draw,rounded corners=3pt,minimum width=2.3cm,minimum height=1cm,align=center,line width=0.9pt}]
+      \node[box,fill=rblue!12,draw=rblue] (N) at (0,1.7) {大公司\\$s_N$};
+      \node[box,fill=ottred!12,draw=ottred] (C) at (4.6,1.7) {新進公司\\$s_C$};
+      \node[box,fill=black!7,draw=black!45,minimum height=0.75cm] (U) at (2.3,-0.35) {未訂閱池 $U$};
+      \draw[-{Stealth[length=2mm]},ottred,line width=1.1pt] (N) to[bend left=14] node[midway,above,font=\tiny,text=ottred]{挖 $\omega_N s_N$} (C);
+      \draw[-{Stealth[length=2mm]},ottred,line width=1.1pt] (C) to[bend left=14] node[midway,below,font=\tiny,text=ottred]{挖 $\omega_C s_C$} (N);
+      \draw[-{Stealth[length=1.8mm]},ottteal] (U)--(N) node[pos=0.55,left=-2pt,font=\tiny,text=ottteal]{$\alpha_N U$};
+      \draw[-{Stealth[length=1.8mm]},ottteal] (U)--(C) node[pos=0.55,right=-2pt,font=\tiny,text=ottteal]{$\alpha_C U$};
+    \end{tikzpicture}
+    \par\vskip0.5em
+    {\scriptsize\color{ottgray}\textbf{圖例}:\textcolor{ottred}{紅}$=$互挖對方游移客、\textcolor{ottteal}{綠}$=$從未訂閱池拉新。}
+    \column{0.5\textwidth}\footnotesize
+    \begin{block}{設定}
+      \begin{itemize}\itemsep2pt
+        \item 兩家每期都有「游移客」$W{=}\omega s$ 可被對方挖;\textbf{大公司的比例較高} $\omega_N{=}0.15>\omega_C{=}0.075$。
+        \item 兩家也從\textbf{未訂閱池}拉新;大公司跌破 0.54 由留存轉獲取。
+      \end{itemize}
+    \end{block}
+    \vskip0.2em
+    {\scriptsize $s_N'{=}(\rho_N{+}0.10)s_N+\alpha_N U-\alpha_C\omega_N s_N+\alpha_N\omega_C s_C$\par
+     $s_C'{=}\rho_C s_C+\alpha_C U-\alpha_N\omega_C s_C+\alpha_C\omega_N s_N$}
   \end{columns}
 \end{frame}
 
-\begin{frame}{延伸模型與結果－敏感度與後續方向}
-  \footnotesize
-  \begin{block}{敏感度(結構性結論穩健)}
-    跨 $\kappa_\rho\in[0.05,0.15]\times\kappa_\alpha\in[0.1,0.4]$:\textbf{三段結構恆存在};$s_\infty$ 隨兩 $\kappa$ 上升;收費維度($T/S$)門檻幾乎不動,成本／網路效應主要影響\textbf{客群維度}($A/R$,dimension separation)。
-  \end{block}
+\begin{frame}{延伸模型2：結果}
   \begin{columns}[T]
-    \column{0.5\textwidth}
-    \begin{exampleblock}{可再延伸}\footnotesize
-      \begin{itemize}\itemsep1pt
-        \item 連續 effort 配置(A/R 比例化)
-        \item 競爭擴展:Stackelberg 雙寡占
-        \item 內容投資作為第二狀態變數
-        \item 隨機需求衝擊 / cohort 追蹤
+    \column{0.62\textwidth}\centering
+      \includegraphics[width=\linewidth]{fig_ext3.png}
+    \column{0.38\textwidth}\footnotesize
+    \begin{block}{$\omega_N{=}0.15$}
+      \begin{itemize}\itemsep3pt
+        \item 大公司 $0.7\!\to\!\mathbf{0.54}$、新進公司 $0\!\to\!\mathbf{0.31}$(\textbf{被侵蝕但仍領先})。
+        \item \textbf{新進公司策略}:市佔小、\textbf{全程獲取}—TA$\to$ SA ;大公司則一直SR不變。
       \end{itemize}
+    \end{block}
+    \begin{exampleblock}{游移比例($\omega_N$)的變化}
+      游移比例越高、差距越小:\\$\omega_N{=}0.05$ gap 0.58、$0.15$ gap 0.24、$0.30$ 幾乎平手。
     \end{exampleblock}
-    \column{0.5\textwidth}
-    \begin{alertblock}{校準誠實性}\footnotesize
-      真正源自文獻者:$\delta_S{=}{+}0.105$(Iyengar 2011)、$\lambda_A{>}\lambda_R$(Min et al.\ 2016)、$\beta{=}0.95$、Bass $\kappa_\alpha\!\equiv\!q$。其餘為設計性 baseline,需敏感度驗證;具體門檻數值僅作量級參考。
-    \end{alertblock}
   \end{columns}
+\end{frame}
+
+\begin{frame}{延伸模型2:解讀}
+  \footnotesize
+  \begin{itemize}\itemsep5pt
+    \item 大公司較高的游移比例讓新進挖到客、站穩腳跟。
+    \item 游移比例($\omega_N$) 越高,領先差距越小。
+    \item 沒有游移($\omega{=}0$)新進無法搶佔市場($\sim$0.06)。
+  \end{itemize}
+  \vskip0.3em
+  \begin{alertblock}{與現實的觀察和連接}\footnotesize
+    解釋 Netflix 為何死守\textbf{降低顧客游移}(原創內容、個人化)，市佔率不應為公司所注重的唯一指標，仍需注重降低顧客的游移比例。
+  \end{alertblock}
 \end{frame}
 
 % =====================================================================
 \section{結論}
 % =====================================================================
-\begin{frame}{結論}
-  \footnotesize
-  \begin{enumerate}\itemsep3pt
-    \item \textbf{三段策略地圖}:Trans-Acq $\to$ Sub-Acq $\to$ Sub-Ret,內生重現 OTT「試水 $\to$ 規模化拉新 $\to$ 成熟留客」生命週期,且在加入網路外部性與規模成本後\textbf{結構穩健}。
-    \item \textbf{網路外部性推升集中}:留存 $\kappa_\rho s$ 與獲取 $\kappa_\alpha s$ 使穩態由 0.50 升至 0.74,$\kappa_\rho$ 夠強時趨向 winner-take-most(臨界質量)。
-    \item \textbf{Bass 口碑的雙面性}:$\kappa_\alpha$ 對留存有利既有者、對獲取卻\textbf{幫助挑戰者追趕},incumbent advantage 因而被部分抵銷。
-    \item \textbf{Dimension separation}:成本／網路效應主要移動\textbf{客群維度}($A/R$),收費維度($T/S$)由收入結構主導。
-  \end{enumerate}
-  \vskip0.3em
-  \begin{exampleblock}{方法論貢獻}
-    在同一 Bellman 框架下整合\hl{收費模式選擇}與\hl{客群策略},並讓收費模式 $P$ 同時影響 $\rho$ 與 $\alpha$;。
-  \end{exampleblock}
-\end{frame}
-
 \begin{frame}{結論－管理意涵}
   \footnotesize
-  \begin{itemize}\itemsep5pt
+  \begin{itemize}\itemsep4pt
     \item \textcolor{ottred}{\textbf{新進期(低 $s$):}}不宜一開始要求高承諾 —— 以\textbf{單部租購(TVOD)作為試水工具},低門檻先拉新。
     \item \textcolor{ottteal}{\textbf{成長期(中 $s$):}}不能只追求留存,否則\textbf{缺乏新客流入};須維持獲客動能。
     \item \textcolor{ottdark}{\textbf{成熟期(高 $s$):}}應\textbf{逐步將資源移向留存},但\textbf{不能完全停止獲客},以抵銷自然流失。
-    \item \textcolor{rblue}{\textbf{網路效應強時:}}\textbf{早期跨越臨界規模}至關重要;落後臨界門檻恐困於低市佔均衡(路徑相依)。
+    \item \textcolor{rblue}{\textbf{網路效應強時:}}\textbf{早期跨越臨界規模}至關重要;落後臨界門檻恐困於低市佔均衡。
+      \item \textcolor{ottorange}{\textbf{面對競爭時:}}市場已被大公司佔領時,\textbf{新進者}應專注\textbf{新客獲取}(挖游移客、搶未訂閱池);\textbf{在位者}則須\textbf{降低顧客游移率}(原創內容、防流失)以守住領先。
   \end{itemize}
-  \vskip0.5em
-  {\footnotesize\color{black!60} 四點分別對應策略地圖三段($a^*(s)$)與留存網路外部性的臨界／雙穩態結果。}
+\end{frame}
+
+\begin{frame}{結論}
+  \footnotesize
+  \begin{enumerate}\itemsep2pt
+    \item \textbf{三段策略地圖}:Trans-Acq $\to$ Sub-Acq $\to$ Sub-Ret 週期。
+    \item \textbf{Dimension separation}:成本／網路效應主要移動\textbf{客群維度}($A/R$),收費維度($T/S$)由收入結構主導。
+    \item \textbf{先進者優勢}:同穩態下先發者累積利潤領先 ${\approx}26.5$。
+    \item \textbf{網路效應非單一方向}:留存外部性 $\kappa_\rho$ 鞏固龍頭、獲取口碑 $\kappa_\alpha$ 助挑戰者追趕。
+    \item \textbf{延伸}:路徑相依僅在「低基礎留存＋高網路外部性」市場出現,小公司被擠進剩餘市場。
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{References}
+  \tiny
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \textbf{Balasubramanian, S., Bhattacharya, S., \& Krishnan, V.~V.} (2015). Pricing Information Goods: Selling vs.\ Pay-per-Use Mechanisms. \textit{Marketing Science}, 34(2).\par\smallskip
+    \textbf{Ben Rhouma, T., \& Zaccour, G.} (2018). Optimal Marketing Strategies for the Acquisition \& Retention of Service Subscribers. \textit{Management Science}, 64(6).\par\smallskip
+    \textbf{Blattberg, R.~C., \& Deighton, J.} (1996). Manage Marketing by the Customer Equity Test. \textit{Harvard Business Review}, 74(4).\par\smallskip
+    \textbf{Datta, H., Foubert, B., \& Van Heerde, H.~J.} (2015). The Challenge of Retaining Customers Acquired with Free Trials. \textit{Journal of Marketing Research}, 52(2).\par\smallskip
+    \textbf{Farrell, J., \& Klemperer, P.} (2007). Coordination and Lock-In: Competition with Switching Costs and Network Effects. \textit{Handbook of Industrial Organization}, Vol.\ 3.\par\smallskip
+    \textbf{Godes, D., \& Mayzlin, D.} (2004). Using Online Conversations to Study Word-of-Mouth Communication. \textit{Marketing Science}, 23(4).\par\smallskip
+    \textbf{Katz, M.~L., \& Shapiro, C.} (1985). Network Externalities, Competition, and Compatibility. \textit{American Economic Review}, 75(3).\par\smallskip
+    \column{0.5\textwidth}
+    \textbf{Lambrecht, A., \& Skiera, B.} (2006). Existence, Causes \& Consequences of Tariff-Choice Biases. \textit{Journal of Marketing Research}, 43(2).\par\smallskip
+    \textbf{Min, S., Zhang, X., Kim, N., \& Srivastava, R.~K.} (2016). Customer Acquisition \& Retention Spending in Wireless Telecom. \textit{Journal of Marketing Research}, 53(5).\par\smallskip
+    \textbf{Ovchinnikov, A., Boulu-Reshef, B., \& Pfeifer, P.~E.} (2014). Balancing Acquisition \& Retention Spending for Firms with Limited Capacity. \textit{Management Science}, 60(8).\par\smallskip
+    \textbf{Rao, A.} (2015). Online Content Pricing: Purchase and Rental Markets. \textit{Marketing Science}, 34(3).\par\smallskip
+    \textbf{Reinartz, W., Thomas, J.~S., \& Kumar, V.} (2005). Balancing Acquisition \& Retention Resources to Maximize Customer Profitability. \textit{Journal of Marketing}, 69(1).\par\smallskip
+    \textbf{Sethi, S.~P.} (1983). Deterministic \& Stochastic Optimization of a Dynamic Advertising Model. \textit{Optimal Control Applications \& Methods}, 4(2).\par\smallskip
+    \vskip0.4em
+    {\color{ottgray}市場數據:JustWatch US Streaming Market Share, 2025 Q4。}
+  \end{columns}
 \end{frame}
 
 \begin{frame}[plain]

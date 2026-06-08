@@ -182,3 +182,7 @@ _40 citations verified against authoritative sources (DOIs/journals). Generated 
   - evidence: https://cris.maastrichtuniversity.nl/en/publications/the-challenge-of-retaining-customers-acquired-with-free-trials/
 - [confirmed] Fader, Peter S.; Hardie, Bruce G. S. (2010). Customer-Base Valuation in a Contractual Setting: The Perils of Ignoring Heterogeneity. Marketing Science, Vol. 29, No. 1, pp. 85–93. DOI: 10.1287/mksc.1080.0482
   - evidence: https://ideas.repec.org/a/inm/ormksc/v29y2010i1p85-93.html
+- [confirmed · web-verified 2026-06] Balasubramanian, Sridhar; Bhattacharya, Shantanu; Krishnan, V. V. (2015). Pricing Information Goods: A Strategic Analysis of the Selling and Pay-per-Use Mechanisms. Marketing Science, Vol. 34, No. 2, pp. 218-234. DOI: 10.1287/mksc.2014.0894
+  - evidence: https://pubsonline.informs.org/doi/10.1287/mksc.2014.0894 ; 獨佔下 pay-per-use(類 TVOD)利潤較高(若 ticking-meter 心理成本低),競爭下一家 selling(類 SVOD)、一家 pay-per-use 且 selling 利潤較高 -- 支持 SVOD/TVOD 並存與市占驅動切換。
+- [confirmed · web-verified 2026-06] Sethi, Suresh P. (1983). Deterministic and stochastic optimization of a dynamic advertising model. Optimal Control Applications and Methods, Vol. 4, No. 2, pp. 179-184.
+  - evidence: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1084250 ; Vidale-Wolfe 廣告模型,最適 feedback 控制在確定與隨機環境下相同 -- 作為「市佔率為狀態、以最適控制求解」的方法論模板先例。
