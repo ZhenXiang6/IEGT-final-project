@@ -84,7 +84,13 @@ is near-identical. When comparing or porting logic, focus here:
 
 ## 工作紀錄 / TODO
 
-**本次 (2026-06-08):**
+**強化版簡報 (2026-06-08 續):**
+- 依使用者 guideline `IEGT final project slide.pdf` 重製 **`OTT_enhanced_slides.tex`**(乾淨白底、**無格紙/裝飾**,寶藍 `#003EA8` 重點色,25 頁,6 章節)。使用者明確要求拿掉背景網格與小裝飾、專注內容。作者為 Group E(徐哲恆/李思嫻/陳奕廷/廖振翔)。
+- 文獻經 **multi-agent workflow**(survey → 敵意查證 → synthesize,Sonnet agents;`ott-lit-survey-verify`)上網查證 40 篇,存 `RESEARCH_dossier.md`(每篇含 DOI/來源 URL);驗證更正了幾處錯誤(如 flat-rate bias 成因、Erickson 1992 期刊為 Management Science)。每張文獻投影片在引用下方附一句說明。
+- **強化模型** `06_enhanced_model.py`(需 `.venv`:`numpy`/`matplotlib`):留存網路外部性 `ρ=ρ₀+δ+κ_ρ s`、獲取 Bass 擴散 `α=α₀+δ̃+κ_α s`(對應 `(p+q s)(1−s)`)、市場規模成本 `C_A(s)=c_A(1+λ_A s)`、`λ_A>λ_R`。401 格點 value iteration:3-regime、`s*≈0.744`(無外部性 0.505)、incumbent advantage ~23%、`κ_ρ` 分歧 → 市場集中。
+- 圖 `fig_{value_paths,phase,bifurcation,buildingblocks,cost}.png`(由 06 產生,相對路徑)。`.venv` 已 gitignore。
+
+**初版簡報 (2026-06-08):**
 - 新增 `CLAUDE.md`(架構導向)、`.gitignore`(LaTeX/Python 產物)。
 - 依 `OTT_strategy_model_report-2.pdf` 製作 Beamer 簡報 `OTT_strategy_slides.tex`
   (XeLaTeX + ctexbeamer + PingFang TC),已編譯為 PDF 並逐頁檢視。

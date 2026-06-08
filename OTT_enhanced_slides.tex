@@ -1,0 +1,505 @@
+% =====================================================================
+%  線上影音串流平台之二維動態策略模型 — 課程簡報 (Beamer, ENHANCED)
+%  依使用者 guideline (IEGT final project slide.pdf) 重製:
+%    格紙背景 + 寶藍 #003EA8 + 筆刷 + 彈簧線圈 + 星號;6 章節結構。
+%  文獻經 workflow 上網查證 (見 RESEARCH_dossier.md);模型經 value iteration 求解 (06_enhanced_model.py)。
+%  Engine: XeLaTeX  ·  Build: xelatex OTT_enhanced_slides.tex  (跑兩次)
+% =====================================================================
+\documentclass[aspectratio=169,11pt,fontset=none]{ctexbeamer}
+\setCJKmainfont{PingFang TC}
+\setCJKsansfont{PingFang TC}
+\setCJKmonofont{Heiti TC}
+
+\usepackage{amsmath,amssymb}
+\usepackage{pifont}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{graphicx}
+\graphicspath{{./}}
+
+% ---------- palette (sampled from the guideline deck) ----------
+\definecolor{rblue}{HTML}{003EA8}
+\definecolor{rblue2}{HTML}{1E5BD6}
+\definecolor{gridc}{HTML}{DCE3F2}
+\definecolor{ottred}{HTML}{E63946}
+\definecolor{ottorange}{HTML}{F4A261}
+\definecolor{ottteal}{HTML}{2A9D8F}
+\definecolor{ottdark}{HTML}{264653}
+\definecolor{ottsand}{HTML}{E9C46A}
+\definecolor{ottgray}{HTML}{6B7B82}
+
+\usetheme{default}
+\useinnertheme{circles}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{structure}{fg=rblue}
+\setbeamercolor{itemize item}{fg=rblue}
+\setbeamercolor{itemize subitem}{fg=rblue2}
+\setbeamercolor{enumerate item}{fg=rblue}
+\setbeamercolor{block title}{fg=white,bg=rblue}
+\setbeamercolor{block body}{fg=black,bg=rblue!7}
+\setbeamercolor{block title alerted}{fg=white,bg=ottred}
+\setbeamercolor{block body alerted}{fg=black,bg=ottred!8}
+\setbeamercolor{block title example}{fg=white,bg=ottteal}
+\setbeamercolor{block body example}{fg=black,bg=ottteal!9}
+\setbeamerfont{frametitle}{series=\bfseries,size=\LARGE}
+\setbeamerfont{block title}{series=\bfseries}
+
+% ---------- clean, content-focused theme: plain white, no decorations ----------
+\setbeamertemplate{background}{}                 % plain white (no grid/decorations)
+
+% frame title: bold blue + thin rule underline
+\setbeamertemplate{frametitle}{%
+  \vskip0.55em
+  {\usebeamerfont{frametitle}\color{rblue}\insertframetitle\par}%
+  \vskip2pt{\color{rblue!40}\rule{\textwidth}{0.9pt}}\par\vskip0.15em}
+
+% minimal footer: page number, bottom-right
+\setbeamertemplate{footline}{\hbox{}\hfill\raisebox{1.1ex}{\scriptsize\color{ottgray}\insertframenumber}\hspace{1.1em}}
+
+% small helpers
+\newcommand{\chip}[1]{\tikz[baseline=-0.5ex]\node[fill=#1,inner sep=2.6pt,rounded corners=1pt]{};}
+\newcommand{\hl}[1]{{\color{rblue}\bfseries #1}}
+\newcommand{\mhl}[1]{{\color{rblue}#1}}   % math-safe highlight (no \bfseries)
+\newcommand{\paper}[2]{\textbf{#1}\,{\footnotesize\color{ottgray}(#2)}}
+
+\title{線上影音串流平台之二維動態策略模型}
+\author{Group E:徐哲恆、李思嫻、陳奕廷、廖振翔}
+\date{Information Economics and Game Theory $\cdot$ 2026}
+
+\begin{document}
+
+% ----------------------------- Title -----------------------------
+\begin{frame}[plain]
+  \vfill
+  \centering
+  {\color{rblue}\rule{0.82\textwidth}{1.4pt}}\\[1.0em]
+  {\fontsize{27}{32}\selectfont\bfseries\color{rblue} Two-Dimensional Dynamic Strategic Model\\[0.12em] for Online Video Streaming Platforms}\\[0.9em]
+  {\LARGE\color{black!72} 線上影音串流平台之二維動態策略模型}\\[1.0em]
+  {\color{rblue}\rule{0.82\textwidth}{1.4pt}}\\[1.8em]
+  {\large\bfseries\color{black!75} Group E:徐哲恆\quad 李思嫻\quad 陳奕廷\quad 廖振翔}\\[0.6em]
+  {\footnotesize\color{ottgray} Information Economics and Game Theory $\cdot$ 2026}
+  \vfill
+\end{frame}
+
+% ----------------------------- TOC -----------------------------
+\begin{frame}
+  \vskip0.2em
+  \begin{center}{\fontsize{27}{31}\selectfont\bfseries\color{rblue} Table of contents}\end{center}
+  \vfill
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+      \large
+      \textcolor{rblue}{\textbf{1.}}\enspace 研究背景與動機\\[1.1em]
+      \textcolor{rblue}{\textbf{2.}}\enspace 文獻回顧\\[1.1em]
+      \textcolor{rblue}{\textbf{3.}}\enspace 模型建構
+    \column{0.5\textwidth}
+      \large
+      \textcolor{rblue}{\textbf{4.}}\enspace 求解結果與解讀\\[1.1em]
+      \textcolor{rblue}{\textbf{5.}}\enspace 延伸模型與結果\\[1.1em]
+      \textcolor{rblue}{\textbf{6.}}\enspace 結論
+  \end{columns}
+  \vfill
+\end{frame}
+
+% =====================================================================
+\section{研究背景與動機}
+% =====================================================================
+\begin{frame}{研究背景與動機}
+  市場上的影音串流(如 Netflix、Disney+),收費模式有兩種主要型態:
+  \begin{itemize}
+    \item \hl{單片租借制}(TVOD, Transactional Video on Demand)
+    \item \hl{訂閱制}(SVOD, Subscription Video on Demand)
+  \end{itemize}
+  \vskip0.5em
+  而在\textbf{客群策略}的維度可分為:
+  \begin{itemize}
+    \item \hl{新顧客獲取}(Acquisition):廣告投放、首月免費／優惠
+    \item \hl{舊顧客留存}(Retention):演算法推薦優化、家庭方案、Bundle
+  \end{itemize}
+  \vskip0.6em
+  \begin{block}{研究動機}
+    這兩個維度都\textbf{與當前市佔率 $s$ 密切相關},且彼此交織。本研究問:廠商應如何\textbf{隨 $s$ 動態地}選擇收費模式與客群策略?
+  \end{block}
+\end{frame}
+
+\begin{frame}{研究背景與動機－市場現有策略分析}
+  \vskip0.8em
+  \centering
+  {\small\renewcommand{\arraystretch}{1.45}
+  \begin{tabular}{l|l|l|l}
+    \textbf{Platform} & \textbf{Market Share} & \textbf{Pricing} & \textbf{Customer strategy}\\\hline
+    Netflix        & High          & Subscription  & Retention\\
+    Disney+        & High to medium& Subscription  & Acquisition $\to$ Retention\\
+    Apple TV+      & Low to medium & Subscription  & Acquisition\\
+    YouTube Movies & Low           & Transactional & Acquisition\\
+  \end{tabular}}
+  \vskip1.0em
+  \begin{flushleft}\footnotesize
+  \textbf{觀察:}市佔率越高的平台越偏向\hl{訂閱制 + 留存};市佔率低的新進者偏向\hl{交易制／獲取}。
+  Disney+ 隨市佔成長,策略由「獲取」轉向「留存」—— 這正是本模型要內生解釋的\textbf{策略隨 $s$ 演化}。
+  \end{flushleft}
+\end{frame}
+
+\begin{frame}{研究問題}
+  影音串流平台兩個維度的核心策略,都與當前市佔率 $s$(Market Share)密切相關:
+  \begin{columns}[t]
+    \column{0.5\textwidth}\begin{block}{收費模式 $P$}\footnotesize
+      \textbf{S} = 訂閱制 SVOD(Netflix 月費吃到飽)\\
+      \textbf{T} = 單部購買 TVOD(iTunes 單片租購)\end{block}
+    \column{0.5\textwidth}\begin{block}{客群策略 $C$}\footnotesize
+      \textbf{A} = 新客獲取(廣告、試用)\\
+      \textbf{R} = 舊客留存(推薦、折扣、內容)\end{block}
+  \end{columns}
+  \vskip0.2em
+  \begin{center}\small
+  \begin{tabular}{c|cc}
+     & $C=A$(獲取) & $C=R$(留存)\\\hline
+    $P=T$(TVOD) & \chip{ottred}\ \textcolor{ottred}{\textbf{Trans-Acq}} & \chip{ottorange}\ \textcolor{ottorange}{\textbf{Trans-Ret}}\\
+    $P=S$(SVOD) & \chip{ottteal}\ \textcolor{ottteal}{\textbf{Sub-Acq}} & \chip{ottdark}\ \textcolor{ottdark}{\textbf{Sub-Ret}}\\
+  \end{tabular}\end{center}
+  \begin{alertblock}{核心問題}
+    給定 $s$,廠商應如何在 4 種組合 $(P,C)\in\{T,S\}\times\{A,R\}$ 中選擇,以最大化跨期折現利潤?最適策略如何\textbf{隨 $s$ 變化}?
+  \end{alertblock}
+\end{frame}
+
+% =====================================================================
+\section{文獻回顧}
+% =====================================================================
+\begin{frame}{文獻回顧－Stream 1:收費模式選擇}
+  \footnotesize
+  \paper{Sundararajan (2004)}{Management Science}\\
+  {\color{ottgray}當使用量監控有交易成本時,在純計次之外加上固定費率\textbf{永遠改善利潤},且兩者可獨立設計 —— 支持把定價拆成訂閱 S 與計次 T 兩種行動。}\\[0.45em]
+  \paper{Bakos \& Brynjolfsson (1999)}{Management Science}\\
+  {\color{ottgray}資訊財捆綁:大數法則使整包估值的分散度低於個別商品,賣方能以\textbf{單一訂閱價}更有效抽取消費者剩餘 —— SVOD 即大型 bundling,支撐 $R(s,S)=p_S$。}\\[0.45em]
+  \paper{Rao (2015)}{Marketing Science}\\
+  {\color{ottgray}廠商無法承諾未來定價時,\textbf{同時提供購買與租借}才最適,且購買選項可做間接跨期價格歧視 —— 支持 SVOD／TVOD 並存的差異化定價。}\\[0.45em]
+  \paper{Fishburn \& Odlyzko (1999)}{Economic Theory}\\
+  {\color{ottgray}訂閱 vs.\ 計次競爭在邊際成本趨近 0 時常引發毀滅性價格戰,且消費者\textbf{壓倒性偏好訂閱} —— 佐證以單一廠商動態最佳化(而非靜態 Bertrand)建模。}
+\end{frame}
+
+\begin{frame}{文獻回顧－Stream 2:客群策略}
+  \footnotesize
+  \paper{Ben Rhouma \& Zaccour (2018)}{Management Science}\\
+  {\color{ottgray}以動態規劃最佳化訂閱服務的\textbf{獲取與留存支出},並以電信資料估計,確認兩者各有顯著成本且實務上留存系統性低投資 —— 本模型把 $\alpha$、$\rho$ 同時當決策維度的直接模板。}\\[0.45em]
+  \paper{Reinartz, Thomas \& Kumar (2005)}{Journal of Marketing}\\
+  {\color{ottgray}實證不同市場地位下\textbf{獲取／留存資源的最適配比},支持本模型「最適 A／R 隨市佔 $s$ 切換」的政策結構。}\\[0.45em]
+  \paper{Schweidel, Fader \& Bradlow (2008)}{Marketing Science}\\
+  {\color{ottgray}雙變量存活模型發現\textbf{獲取時點與後續留存期限正相關},支持把 $\alpha$ 與 $\rho$ 視為同一行動下的聯動參數。}\\[0.45em]
+  \paper{Datta, Foubert \& Van Heerde (2015)}{JMR}\\
+  {\color{ottgray}免費試用取得的客戶 CLV 比正常客戶\textbf{低 59\%}、留存僅約 1／3 —— 量化「以獲取取得的客戶留存較低」,校準 A 與 R 的留存差距。}
+\end{frame}
+
+\begin{frame}{文獻回顧－方法論模板(Lanchester 動態 + 動態規劃)}
+  \footnotesize
+  \paper{Erickson (1992)}{Management Science}\\
+  {\color{ottgray}以 Lanchester 微分對局估計真實廣告競爭資料,狀態方程 $\dot x=k_1u_1(1-x)-k_2u_2x$ 在離散化後即本模型 $s'=\rho\,s+\alpha(1-s)$ 的結構 —— 轉移式的實證依據。}\\[0.45em]
+  \paper{Bellman (1957)}{Dynamic Programming}\quad\paper{Blackwell (1965)}{Ann.\ Math.\ Stat.}\\
+  {\color{ottgray}最優性原則 + 折現有界報酬下 Bellman 算子為\textbf{壓縮映射},保證最適值函數唯一存在、value iteration 由任意起點收斂 —— 求解的理論基礎。}\\[0.45em]
+  \paper{Stokey, Lucas \& Prescott (1989)}{Recursive Methods in Economic Dynamics}\\
+  {\color{ottgray}系統化遞迴方法與收斂速率(模數 $\beta^n\!\to\!0$),為離散時間無限期折現 DP 提供標準工具。}\\[0.45em]
+  \paper{Nerlove \& Arrow (1962)}{Economica}\quad\paper{Ovchinnikov et al.\ (2014)}{Management Science}\\
+  {\color{ottgray}「商譽資本」存量累積 + 自然衰減的動態框架;後者示範獲取／留存支出隨市佔動態變化的 DP 求解先例。}
+\end{frame}
+
+\begin{frame}{文獻回顧－模型機制(網路外部性、Bass 擴散、規模成本)}
+  \footnotesize
+  \textbf{\color{rblue}留存的網路外部性 $\Rightarrow \kappa_\rho\, s$}\\
+  \paper{Katz \& Shapiro (1985)}{Amer.\ Econ.\ Review}、\paper{Klemperer (1987)}{QJE}、\paper{Farrell \& Klemperer (2007)}{Handbook of IO}\\
+  {\color{ottgray}效用隨安裝基礎上升、轉換成本與網路效應共同把用戶\textbf{鎖定}於供應商($\partial\rho/\partial s>0$),且廠商「事前競爭以取得事後市場力」。}\\[0.5em]
+  \textbf{\color{rblue}獲取的擴散／口碑 $\Rightarrow \kappa_\alpha\, s$(Bass)}\\
+  \paper{Bass (1969)}{Management Science}、\paper{Peres, Muller \& Mahajan (2010)}{IJRM}、\paper{Godes \& Mayzlin (2004)}{Marketing Science}\\
+  {\color{ottgray}採用率 $=p+q\,F$(創新 $p$ + 模仿 $q$);內部影響 $q$ 同時涵蓋口碑、網路外部性與社會訊號 —— 正當化 $\alpha(s)=\alpha_0+\kappa_\alpha s$。}\\[0.5em]
+  \textbf{\color{rblue}成本隨市場規模 $\Rightarrow C_A(s),C_R(s)$}\\
+  \paper{Min, Zhang, Kim \& Srivastava (2016)}{JMR}、\paper{Blattberg \& Deighton (1996)}{HBR}\\
+  {\color{ottgray}41 國電信實證:\textbf{獲取成本隨市場滲透上升、留存無此規模效應} $\Rightarrow \lambda_A>\lambda_R$。}
+\end{frame}
+
+% =====================================================================
+\section{模型建構}
+% =====================================================================
+\begin{frame}{模型建構－環境設定與行動空間}
+  \begin{columns}[t]
+    \column{0.56\textwidth}\footnotesize
+      \begin{itemize}
+        \item 單一廠商;離散時間 $t=0,1,2,\dots$(一期為一策略週期)
+        \item 無限期 + 折現,$\beta\in(0,1)$,取 $\beta=0.95$
+        \item 潛在市場標準化 $N\equiv1$;狀態 $s_t\in[0,1]$
+        \item 非用戶池 $1-s_t$:可被獲取的潛在客戶
+      \end{itemize}
+      \vskip0.4em
+      每期同時選兩個維度
+      \[ a_t=(P_t,C_t),\quad P_t\in\{\mathrm T,\mathrm S\},\ C_t\in\{\mathrm A,\mathrm R\} \]
+      \[ \mathcal A=\{(\mathrm{T,A}),(\mathrm{T,R}),(\mathrm{S,A}),(\mathrm{S,R})\} \]
+    \column{0.44\textwidth}
+      \begin{block}{$2\times2$ 行動}\centering\footnotesize
+        \begin{tabular}{c|cc}
+          & $C{=}A$ & $C{=}R$\\\hline
+          $P{=}T$ & \chip{ottred} TA & \chip{ottorange} TR\\
+          $P{=}S$ & \chip{ottteal} SA & \chip{ottdark} SR\\
+        \end{tabular}\end{block}
+      \begin{block}{價格外生}\footnotesize $p_S=15$,$p_T=5$ 為業界標準,廠商不調價。\end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{模型建構－狀態轉移(市佔率)}
+  \[ \boxed{\,s_{t+1}=\rho(a_t,s_t)\cdot s_t \;+\; \alpha(a_t,s_t)\cdot(1-s_t)\,} \]
+  \begin{itemize}
+    \item 第一項 $\rho\,s$:本期留下的\textbf{既有客戶}(留存率 $\rho$)。
+    \item 第二項 $\alpha(1-s)$:從\textbf{非用戶池} $1-s$ 獲取的新客(獲取率 $\alpha$)。
+  \end{itemize}
+  \vskip0.3em
+  \begin{block}{文獻依據}\footnotesize
+    此式為 Lanchester 市佔率動態(Erickson 1992)的離散時間版,亦延續 Nerlove--Arrow (1962)「存量累積 $+$ 自然衰減 $(1-\rho)$」的商譽資本邏輯;$(1-s)$ 飽和項對應 Vidale--Wolfe 模型(Sethi 1977),反映可獲取池隨 $s$ 上升而縮減。
+  \end{block}
+  \vskip0.2em
+  {\footnotesize 下面三頁分別給出 $\rho$、$\alpha$ 與利潤的具體函數形式 —— 並各自加入\hl{網路外部性}與\hl{市場規模}效應。}
+\end{frame}
+
+\begin{frame}{模型建構－顧客留存率(網路外部性)}
+  \[ \rho(P,C,s)=\rho_0+\delta_P+\delta_C+\mhl{\kappa_\rho\, s}\qquad(\text{上限截斷 }\min(\cdot,1)) \]
+  \begin{columns}[T]
+    \column{0.5\textwidth}\centering\small
+    \begin{tabular}{c|cc}
+       & $C{=}R$ & $C{=}A$\\\hline
+      $P{=}S$ & $\rho_0{+}\delta_S{+}\delta_R{+}\kappa_\rho s$ & $\rho_0{+}\delta_S{+}\kappa_\rho s$\\
+      $P{=}T$ & $\rho_0{+}\delta_R{+}\kappa_\rho s$ & $\rho_0{+}\kappa_\rho s$\\
+    \end{tabular}\\[0.4em]
+    {\scriptsize $\rho_0{=}0.65$,$\delta_S{=}{+}0.105$(Iyengar 2011),$\delta_R{=}{+}0.10$,$\kappa_\rho{=}0.08$}
+    \column{0.5\textwidth}
+    \begin{block}{$\kappa_\rho\,s$ 的意義}\footnotesize
+      平台越大 $\Rightarrow$ 內容庫、推薦、社群效用越高 $\Rightarrow$ 留客率上升(\textbf{直接網路效應 / lock-in})。\\
+      依據:Katz \& Shapiro (1985)、Klemperer (1987)、Farrell \& Klemperer (2007)。
+    \end{block}
+  \end{columns}
+  \vskip0.2em
+  \begin{alertblock}{動態後果}\footnotesize
+    $\kappa_\rho\,s$ 使轉移函數 $f(s)$ 非線性、$\rho\,s$ 凸 $\Rightarrow$ 穩態被往上推、且 $\kappa_\rho$ 越大市場越\textbf{傾向集中}(第 5 章分歧分析)。
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{模型建構－顧客獲取率(Bass 擴散)}
+  \[ \alpha(P,C,s)=\alpha_0+\tilde\delta_P+\tilde\delta_C+\mhl{\kappa_\alpha\, s} \]
+  \begin{columns}[T]
+    \column{0.52\textwidth}\centering\small
+    \begin{tabular}{c|cc}
+       & $C{=}R$ & $C{=}A$\\\hline
+      $P{=}S$ & $\alpha_0{+}\tilde\delta_S{+}\kappa_\alpha s$ & $\alpha_0{+}\tilde\delta_S{+}\tilde\delta_A{+}\kappa_\alpha s$\\
+      $P{=}T$ & $\alpha_0{+}\tilde\delta_T{+}\kappa_\alpha s$ & $\alpha_0{+}\tilde\delta_T{+}\tilde\delta_A{+}\kappa_\alpha s$\\
+    \end{tabular}\\[0.4em]
+    {\scriptsize $\alpha_0{=}0.10$,$\tilde\delta_T{=}{+}0.05$,$\tilde\delta_A{=}{+}0.15$,$\kappa_\alpha{=}0.20$}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{對應 Bass (1969)}\footnotesize
+      Bass 採用率 $=p+q\,F$。令 $F\equiv s$,每期新增
+      \[ \alpha(s)(1-s)=(\,\underbrace{\alpha_0}_{p}+\underbrace{\kappa_\alpha}_{q}\,s)(1-s) \]
+      $\alpha_0\!\equiv\!p$(廣告／外部),$\kappa_\alpha\!\equiv\!q$(口碑模仿)。
+    \end{exampleblock}
+  \end{columns}
+  \vskip0.2em
+  {\footnotesize 依據:Bass (1969);Peres et al.\ (2010)指 $q$ 同時涵蓋口碑、網路外部性與社會訊號;Godes \& Mayzlin (2004) 實證口碑廣度預測收視。轉移式 $s'=\rho s+\alpha(s)(1-s)$ 即\hl{離散時間 Bass--Lanchester 方程}。}
+\end{frame}
+
+\begin{frame}{模型建構－利潤函數}
+  \[ \boxed{\,\pi(s,a)=\underbrace{R(s,P)}_{\text{每用戶收入}}\cdot\, s \;-\; \underbrace{C(C,s)}_{\text{行銷成本}}\,} \]
+  \begin{itemize}
+    \item $R(s,P)$ 為每用戶每期收入,$R(s,P)\cdot s$ 為總收入(已正規化 $N\equiv1$)。
+    \item $C(C,s)$ 為每期行銷成本,\textbf{隨市場規模 $s$ 變動}(下下頁)。
+  \end{itemize}
+  \vskip0.4em
+  \begin{block}{兩個 trade-off}\footnotesize
+    \textbf{短期 vs.\ 跨期}:同 pricing 下留存(R)短期成本低;但獲取(A)提高 $\alpha$、推升未來 $s$,有跨期利益 $\Rightarrow$ 動態最佳化才是真正決策。\\
+    \textbf{收費維度}:SVOD 每用戶收入高但前期需培養市佔;TVOD 隨規模 $s$ 才放大收入。
+  \end{block}
+\end{frame}
+
+\begin{frame}{模型建構－收入函數}
+  \[ R(s,\mathrm S)=p_S,\qquad R(s,\mathrm T)=p_T\,(\varphi_0+\varphi_1\, s),\quad \varphi_1>0 \]
+  \begin{columns}[T]
+    \column{0.5\textwidth}\footnotesize
+    \textbf{SVOD($p_S$):規模無感的均一收費。}\\
+    消費者存在 flat-rate bias,願為固定月費\textbf{溢價}(Lambrecht \& Skiera 2006);大型捆綁使 $p_S$ 具競爭韌性(Bakos \& Brynjolfsson 1999/2000)。
+    \column{0.5\textwidth}\footnotesize
+    \textbf{TVOD($p_T(\varphi_0{+}\varphi_1 s)$):規模敏感。}\\
+    平台越大 $\Rightarrow$ 目錄／受眾越大 $\Rightarrow$ 人均購買頻率上升;Carroni \& Paolini (2020) 證受眾達臨界值後平台轉向純訂閱($T\!\to\!S$)。
+  \end{columns}
+  \vskip0.5em
+  \begin{block}{校準與依據}\footnotesize
+    $p_S{=}15$、$p_T{=}5$、$\varphi_0{=}\varphi_1{=}0.5$;低 $s$ 時 $R(s,S)>R(s,T)$。Iyengar et al.\ (2011) 實證 two-part tariff 雖使留存 $-10.5\%$、用量 $-38.7\%$,但固定費收益補償使\textbf{整體利潤仍較高} —— 支撐 $p_S$ 高於邊際成本。
+  \end{block}
+\end{frame}
+
+\begin{frame}{模型建構－成本函數(市場規模)}
+  \[ \boxed{\,C_A(s)=c_A\,(1+\lambda_A\, s),\qquad C_R(s)=c_R\,(1+\lambda_R\, s),\qquad \lambda_A>\lambda_R\,} \]
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+    \begin{block}{為何 $\lambda_A>\lambda_R$}\footnotesize
+      Min et al.\ (2016) 以 41 國無線電信實證:市場領導者的\textbf{獲取成本優勢隨滲透率上升}(高 $s$ 時拉新更貴),但\textbf{留存成本無此規模效應}。\\
+      $\Rightarrow$ 市場越飽和,廠商越\textbf{提早轉向留存}。
+    \end{block}
+    \column{0.48\textwidth}\centering
+    \includegraphics[width=0.82\linewidth]{fig_cost.png}\\
+    {\scriptsize $C_A(s)$(紅)陡升、$C_R(s)$(橘)緩升。}
+  \end{columns}
+  \vskip0.2em
+  {\footnotesize 校準:$c_A{=}1.2,\lambda_A{=}1.0$($C_A$:$1.2\!\to\!2.4$);$c_R{=}0.8,\lambda_R{=}0.3$($C_R$:$0.8\!\to\!1.04$)。}
+\end{frame}
+
+\begin{frame}{模型建構－Bellman 方程與求解方法}
+  \[ V(s)=\max_{a\in\mathcal A}\big\{\,\pi(s,a)+\beta\,V(s'(s,a))\,\big\},\quad s'=\rho(a,s)\,s+\alpha(a,s)(1-s) \]
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+    \begin{block}{存在性與唯一性}\footnotesize
+      $\mathcal A$ 有限、$[0,1]$ 緊緻、$\pi$ 連續有界、$\beta\in(0,1)$ $\Rightarrow$ Bellman 算子為\textbf{壓縮映射},唯一不動點 $V^*$ 存在(Bellman 1957;Blackwell 1965;SLP 1989)。
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{exampleblock}{Value Iteration}\footnotesize
+      1. 於 $s\in\{0,0.0025,\dots,1\}$(\textbf{401 格點})初始化 $V_0{=}0$。\\
+      2. 每格 $\times$ 每 $a$:$Q=\pi+\beta\,V_k(s')$,$V_{k+1}=\max_a Q$,以線性插值取 $V_k(s')$。\\
+      3. $\lVert V_{k+1}-V_k\rVert_\infty<10^{-8}$ 停止。
+    \end{exampleblock}
+  \end{columns}
+  \vskip0.2em
+  {\footnotesize 本模型於 \hl{406 次迭代}收斂。VI 在整個 $[0,1]$ 同步求出最適策略函數 $a^*(\cdot)$,不需指定起點(起點僅用於事後模擬路徑)。}
+\end{frame}
+
+% =====================================================================
+\section{求解結果與解讀}
+% =====================================================================
+\begin{frame}{求解結果－三段策略地圖}
+  最適策略 $a^*(s)$ 在強化模型下仍呈\textbf{乾淨的三段結構}:
+  \begin{center}
+  \begin{tikzpicture}[x=11cm,y=1cm]
+    \fill[ottred](0,0)rectangle(0.107,0.7);\fill[ottteal](0.107,0)rectangle(0.535,0.7);\fill[ottdark](0.535,0)rectangle(1,0.7);
+    \draw[thick](0,0)rectangle(1,0.7);
+    \node[white,font=\scriptsize\bfseries,rotate=90]at(0.053,0.35){T-A};
+    \node[white,font=\small\bfseries]at(0.32,0.35){Sub-Acq};
+    \node[white,font=\small\bfseries]at(0.77,0.35){Sub-Ret};
+    \draw[->](0,-0.05)--(1.04,-0.05)node[right]{\small $s$};
+    \foreach \x in {0,0.107,0.535,1}\draw(\x,-0.02)--(\x,-0.08);
+    \node[below,font=\scriptsize]at(0,-0.08){0};\node[below,font=\scriptsize]at(0.107,-0.08){0.11};
+    \node[below,font=\scriptsize]at(0.535,-0.08){0.54};\node[below,font=\scriptsize]at(1,-0.08){1.0};
+  \end{tikzpicture}
+  \end{center}
+  \centering\footnotesize
+  \begin{tabular}{l|l|l}
+    區間 & 策略 & 經濟意義\\\hline
+    $s\in[0,0.11]$ & \textcolor{ottred}{\textbf{Trans-Acq}} & 極早期試水;SVOD 短期虧損,TVOD 低門檻拉新\\
+    $s\in[0.11,0.54]$ & \textcolor{ottteal}{\textbf{Sub-Acq}} & 成長期;滲透定價,Bass 口碑 $\kappa_\alpha s$ 加速獲取\\
+    $s\in[0.54,1]$ & \textcolor{ottdark}{\textbf{Sub-Ret}} & 成熟期;留存網路效應 $\kappa_\rho s$ 與規模成本使廠商守成\\
+  \end{tabular}
+  \vskip0.2em
+  {\footnotesize $(T,R)$ 從未被選 —— TVOD 較低人均收入使留存投資在任何 $s$ 皆不划算。}
+\end{frame}
+
+\begin{frame}{求解結果－穩態與網路效應}
+  \begin{columns}[T]
+    \column{0.6\textwidth}\centering
+      \includegraphics[width=\linewidth]{fig_value_paths.png}
+    \column{0.4\textwidth}\footnotesize
+      \begin{alertblock}{網路效應推升穩態}
+        無外部性 baseline:$s_\infty\approx\textbf{0.505}$。\\
+        強化模型:$s_\infty\approx\mhl{0.744}$(\textbf{+47\%})。
+      \end{alertblock}
+      $\rho$、$\alpha$ 的網路外部性使 $V(s)$ 整體\textbf{上移且更凸},廠商更願在早期投資市佔。\\[0.4em]
+      \textbf{Incumbent advantage:}三類廠商都收斂到同一 $s_\infty$,但 25 年折現利潤相差約 \hl{23\%}(Newcomer 115.3 / Mid 124.3 / Incumbent 141.8)。
+  \end{columns}
+\end{frame}
+
+\begin{frame}{求解結果－轉移機制與 Bass 加速}
+  \begin{columns}[T]
+    \column{0.58\textwidth}\centering
+      \includegraphics[width=\linewidth]{fig_buildingblocks.png}
+    \column{0.42\textwidth}\footnotesize
+      \textbf{左圖} 三個轉移成分:
+      \begin{itemize}\itemsep1pt
+        \item 留存流入 $\rho(s)s$ 隨 $s$ 凸增(網路外部性)。
+        \item 獲取流入 $\alpha(s)(1-s)$ 呈 \textbf{Bass 鐘形}:口碑先加速、池子飽和後下降。
+      \end{itemize}
+      \vskip0.3em
+      \begin{exampleblock}{非顯然結果}
+        $\kappa_\alpha$(口碑)越大,\textbf{新進者追趕越快} $\Rightarrow$ incumbent advantage 由 $\sim$29\% 降到 $\sim$19\%。網路效應對留存有利於既有者、對獲取卻幫助挑戰者。
+      \end{exampleblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{求解結果－與現實世界的對應}
+  \footnotesize
+  \begin{block}{模型預測 $\leftrightarrow$ 現實觀察}
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{p{0.46\textwidth}|p{0.48\textwidth}}
+      \textbf{模型結果} & \textbf{現實對應}\\\hline
+      低 $s$ 採 Trans-Acq(TVOD 試水) & YouTube Movies、利基平台以單片租購切入\\
+      成長期 Sub-Acq(SVOD + 拉新) & Disney+、Apple TV+ 以訂閱 + 補貼衝市佔\\
+      成熟期 Sub-Ret(SVOD + 留存) & Netflix:推薦、原創、2022 打擊密碼共享\\
+      網路效應推升 $s_\infty$ 至 0.74 & 串流市場「強者恆強」、領導者市佔黏著\\
+      $\kappa_\alpha$ 口碑加速挑戰者 & Disney+ 上線 1 年破億訂戶(口碑擴散)\\
+    \end{tabular}
+  \end{block}
+  \vskip0.2em
+  {\footnotesize 策略地圖對應 OTT 平台「初創 TVOD 試水 $\to$ 規模化 SVOD 拉新 $\to$ 成熟期 SVOD 留客」的生命週期;Disney+ 由獲取轉留存正是沿策略地圖右移。}
+\end{frame}
+
+% =====================================================================
+\section{延伸模型與結果}
+% =====================================================================
+\begin{frame}{延伸模型與結果－網路效應與市場集中}
+  \begin{columns}[T]
+    \column{0.54\textwidth}\centering
+      \includegraphics[width=\linewidth]{fig_bifurcation.png}
+    \column{0.46\textwidth}\footnotesize
+      掃描留存網路外部性 $\kappa_\rho$:穩態 $s_\infty$ 由 $\kappa_\rho{=}0$ 的 $\sim$0.60 一路升到 $\kappa_\rho{\ge}0.14$ 的 $\sim$0.94。
+      \begin{alertblock}{Critical Mass / 集中化}
+        留存網路效應越強,市場越\textbf{傾向 winner-take-most}:跨過臨界區後廠商幾乎獨佔。呼應 Rohlfs (1974) 臨界質量、Arthur (1989) lock-in。
+      \end{alertblock}
+      對應現實:串流市場在內容與推薦的網路效應下,長期趨向少數平台高度集中。
+  \end{columns}
+\end{frame}
+
+\begin{frame}{延伸模型與結果－敏感度與後續方向}
+  \footnotesize
+  \begin{block}{敏感度(結構性結論穩健)}
+    跨 $\kappa_\rho\in[0.05,0.15]\times\kappa_\alpha\in[0.1,0.4]$:\textbf{三段結構恆存在};$s_\infty$ 隨兩 $\kappa$ 上升;收費維度($T/S$)門檻幾乎不動,成本／網路效應主要影響\textbf{客群維度}($A/R$,dimension separation)。
+  \end{block}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{exampleblock}{可再延伸}\footnotesize
+      \begin{itemize}\itemsep1pt
+        \item 連續 effort 配置(A/R 比例化)
+        \item 競爭擴展:Stackelberg 雙寡占
+        \item 內容投資作為第二狀態變數
+        \item 隨機需求衝擊 / cohort 追蹤
+      \end{itemize}
+    \end{exampleblock}
+    \column{0.5\textwidth}
+    \begin{alertblock}{校準誠實性}\footnotesize
+      真正源自文獻者:$\delta_S{=}{+}0.105$(Iyengar 2011)、$\lambda_A{>}\lambda_R$(Min et al.\ 2016)、$\beta{=}0.95$、Bass $\kappa_\alpha\!\equiv\!q$。其餘為設計性 baseline,需敏感度驗證;具體門檻數值僅作量級參考。
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% =====================================================================
+\section{結論}
+% =====================================================================
+\begin{frame}{結論}
+  \footnotesize
+  \begin{enumerate}\itemsep3pt
+    \item \textbf{三段策略地圖}:Trans-Acq $\to$ Sub-Acq $\to$ Sub-Ret,內生重現 OTT「試水 $\to$ 規模化拉新 $\to$ 成熟留客」生命週期,且在加入網路外部性與規模成本後\textbf{結構穩健}。
+    \item \textbf{網路外部性推升集中}:留存 $\kappa_\rho s$ 與獲取 $\kappa_\alpha s$ 使穩態由 0.50 升至 0.74,$\kappa_\rho$ 夠強時趨向 winner-take-most(臨界質量)。
+    \item \textbf{Bass 口碑的雙面性}:$\kappa_\alpha$ 對留存有利既有者、對獲取卻\textbf{幫助挑戰者追趕},incumbent advantage 因而被部分抵銷。
+    \item \textbf{Dimension separation}:成本／網路效應主要移動\textbf{客群維度}($A/R$),收費維度($T/S$)由收入結構主導。
+  \end{enumerate}
+  \vskip0.3em
+  \begin{exampleblock}{方法論貢獻}
+    在同一 Bellman 框架下整合\hl{收費模式選擇}與\hl{客群策略},並讓收費模式 $P$ 同時影響 $\rho$ 與 $\alpha$;所有函數形式皆有\textbf{經查證文獻}支撐(Bass 擴散 $\times$ 網路外部性 $\times$ 規模成本)。
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}[plain]
+  \vfill\centering
+  {\color{rblue}\rule{0.5\textwidth}{1.4pt}}\\[0.8em]
+  {\Large\bfseries\color{rblue} 謝謝聆聽\quad Q\,\&\,A}\\[0.6em]
+  {\footnotesize\color{black!70} 線上影音串流平台之二維動態策略模型 $\cdot$ Group E $\cdot$ 2026}\\[0.6em]
+  {\color{rblue}\rule{0.5\textwidth}{1.4pt}}
+  \vfill
+\end{frame}
+
+\end{document}

@@ -69,6 +69,29 @@ Dependencies: `numpy`, `matplotlib`
 > original author's machine. Change it to a local/relative path (e.g. `./strategy_map.png`)
 > before running, or the script will error.
 
+### Enhanced model + verified-literature deck
+
+`06_enhanced_model.py` is the **enhanced** model behind the current deck. On top of the report
+baseline it adds: a retention network externality `ρ=ρ₀+δ+κ_ρ·s` (Katz–Shapiro 1985; Klemperer
+1987), an acquisition **Bass-diffusion** term `α=α₀+δ̃+κ_α·s` (so the inflow
+`α(s)(1−s)=(p+q·s)(1−s)`; Bass 1969), and **market-scale costs** `C_A(s)=c_A(1+λ_A s)`,
+`C_R(s)=c_R(1+λ_R s)` with `λ_A>λ_R` (Min et al. 2016). Value iteration on a 401-point grid gives
+a 3-regime policy, steady state `s*≈0.744` (vs 0.505 without externalities), ~23% incumbent
+advantage, and a `κ_ρ`-bifurcation toward market concentration. Run it in a venv (the default
+`python3` has no numpy):
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install numpy matplotlib
+.venv/bin/python 06_enhanced_model.py   # writes fig_value_paths/phase/bifurcation/buildingblocks/cost.png
+```
+
+The literature behind every assumption was surveyed and **adversarially verified online** (a
+multi-agent workflow); the 40 verified citations (DOIs + evidence URLs) are in `RESEARCH_dossier.md`.
+
+`OTT_enhanced_slides.tex` is the **current** Beamer deck (clean white theme, no decorations, royal
+blue `#003EA8`, 25 pages, 6 sections; each cited paper carries a one-line explanation). Build with
+`xelatex` twice. (`OTT_strategy_slides.tex` is the earlier report-based deck.)
+
 ### Building the presentation
 
 The slide deck (`OTT_strategy_slides.tex`) summarizes the full report in Beamer. It is written
