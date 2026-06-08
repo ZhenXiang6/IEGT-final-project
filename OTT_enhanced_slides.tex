@@ -13,7 +13,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{pifont}
 \usepackage{tikz}
-\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.pathmorphing,positioning,arrows.meta}
 \usepackage{graphicx}
 \graphicspath{{./}}
 
@@ -209,14 +209,14 @@
     \column{0.5\textwidth}\footnotesize
     \begin{block}{文獻缺口}
       \begin{itemize}\itemsep4pt
-        \item \textbf{研究流一(定價維度):}探討 SVOD vs TVOD 收費模式,但多數\textbf{未同時納入獲客／留客}決策。
-        \item \textbf{研究流二(客群維度):}最佳化 Acquisition vs Retention,但通常\textbf{假設收費模式固定}。
+        \item \textbf{定價維度:}探討 SVOD vs TVOD 收費模式,但多數\textbf{未同時納入獲客／留客}決策。
+        \item \textbf{客群維度:}最佳化 Acquisition vs Retention,但通常\textbf{假設收費模式固定}。
       \end{itemize}
     \end{block}
     \column{0.5\textwidth}\footnotesize
     \begin{exampleblock}{本研究貢獻}
       將\textbf{定價}與\textbf{客群}兩維度納入\textbf{同一個 Bellman 模型},並讓收費模式 $P$ \textbf{同時影響}留存 $\rho$ 與獲取 $\alpha$。\\[3pt]
-      求解得到\textbf{隨市佔率 $s$ 變化的策略地圖} $a^*(s)$ —— 兩維度的動態交互正是過去文獻的交集缺口。
+      求解得到\textbf{隨市佔率 $s$ 變化的最優策略} $a^*(s)$ 
     \end{exampleblock}
   \end{columns}
 \end{frame}
@@ -247,6 +247,34 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{模型建構－單期決策流程}
+  \vskip0.7em
+  \begin{center}
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+    font=\footnotesize,
+    box/.style={rounded corners=4pt, draw=black!25, line width=0.9pt, fill=white,
+                minimum width=2.6cm, minimum height=1.5cm, align=center, inner sep=3pt},
+    act/.style={rounded corners=4pt, draw=rblue, line width=1.4pt, fill=rblue!8,
+                minimum width=2.6cm, minimum height=1.5cm, align=center, inner sep=3pt},
+    nxt/.style={rounded corners=4pt, draw=ottteal, line width=1.4pt, fill=ottteal!10,
+                minimum width=2.6cm, minimum height=1.5cm, align=center, inner sep=3pt},
+    ar/.style={-{Stealth[length=3mm,width=2.4mm]}, line width=1.1pt, draw=black!50}]
+    \node[box] (a) at (0,0)    {看到期初市佔\\[2pt]$s_t$};
+    \node[act] (b) at (3.4,0)  {\textbf{選擇策略}\\[2pt]$(P_t,C_t)$};
+    \node[box] (c) at (6.8,0)  {獲得本期利潤\\[2pt]$\pi(s_t,a_t)$};
+    \node[box] (d) at (10.2,0) {舊客流失\\[2pt]新客加入};
+    \node[nxt] (e) at (13.6,0) {進入下一期\\[2pt]$s_{t+1}$};
+    \draw[ar] (a)--(b); \draw[ar] (b)--(c); \draw[ar] (c)--(d); \draw[ar] (d)--(e);
+  \end{tikzpicture}}
+  \end{center}
+  \vskip0.9em
+  \begin{itemize}\footnotesize
+    \item 每期先觀察市佔 $s_t$,再從 4 種策略擇一 $(P_t,C_t)$,賺取當期利潤後,經舊客流失與新客加入決定 $s_{t+1}$。
+    \item \textbf{關鍵}:$s_t$ 在當期決策時\textbf{給定},$s_{t+1}$ 則由本期策略\textbf{內生}形成 —— 故須以動態最佳化求解,而非逐期靜態。
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{模型建構－狀態轉移(市佔率)}
   \[ \boxed{\,s_{t+1}=\underbrace{\rho(a_t,s_t)}_{\text{retention rate}}\cdot s_t \;+\; \underbrace{\alpha(a_t,s_t)}_{\text{Acquisition}}\cdot(1-s_t)\,} \]
   \begin{itemize}
@@ -255,7 +283,28 @@
     \item 以上兩項 ($\rho, \alpha$) 皆會根據 action ($a$) 與 market share ($s$) 而有變動。
   \end{itemize}
   \vskip0.3em
-  {\footnotesize 下面兩頁分別給出 $\rho$、$\alpha$ 與利潤的具體函數形式}
+  {\footnotesize 下面先以\textbf{水桶比喻}直觀說明,後續再給出 $\rho$、$\alpha$ 與利潤的函數形式}
+\end{frame}
+
+\begin{frame}{模型建構－市佔率怎麼動(水桶比喻)}
+  \[ \boxed{\,s_{t+1}=\underbrace{\textcolor{rblue}{\rho(a_t)\,s_t}}_{\text{留下的舊客}}\;+\;\underbrace{\textcolor{ottteal}{\alpha(a_t)(1-s_t)}}_{\text{加入的新客}}\,} \]
+  \vskip0.4em
+  \begin{center}
+  \begin{tikzpicture}[font=\small]
+    \fill[rblue!15] (0,0) rectangle (4,1.15);
+    \draw[line width=1.4pt, draw=rblue!75] (0,0) rectangle (4,2.2);
+    \draw[rblue!45, line width=0.8pt] (0,1.15)--(4,1.15);
+    \node[rblue, font={\footnotesize\bfseries}] at (2,0.55) {目前用戶池 $s_t$};
+    \draw[-{Stealth[length=3mm,width=2.4mm]}, line width=1.6pt, ottteal] (-3,1.62) -- (-0.05,1.62);
+    \node[ottteal, font={\scriptsize\bfseries}, anchor=south] at (-1.5,1.74) {新客流入 $\alpha(a_t)(1-s_t)$};
+    \draw[-{Stealth[length=3mm,width=2.4mm]}, line width=1.6pt, ottred] (4.05,0.5) -- (6.9,-0.35);
+    \node[ottred, font={\scriptsize\bfseries}, anchor=south west] at (4.9,0.45) {舊客流失 $1-\rho(a_t)$};
+    \node[ottteal, font={\scriptsize\bfseries}, anchor=north west] at (-3,-0.45) {Acquisition:讓更多水流進來};
+    \node[ottdark, font={\scriptsize\bfseries}, anchor=north west] at (4.1,-0.75) {Retention:把桶子的破洞補小};
+  \end{tikzpicture}
+  \end{center}
+  \vskip0.4em
+  {\footnotesize\centering 直覺:\textbf{獲取}(\textcolor{ottteal}{$\alpha$})把水倒進桶、\textbf{留存}(\textcolor{rblue}{$\rho$})決定漏掉多少,市佔即\textbf{水位}。\par}
 \end{frame}
 
 \begin{frame}{模型建構－顧客留存率(Retention Rate $\rho$)}
@@ -269,11 +318,11 @@
     \end{tabular}\\[0.4em]
     {\scriptsize $\rho_0{=}0.65,\ \delta_S{=}{+}0.105,\ \delta_R{=}{+}0.10,\ \kappa_\rho{=}0.08$}
     \column{0.54\textwidth}\footnotesize
-    \begin{block}{為何不同策略 $\Rightarrow$ 不同留存率}
+    \begin{block}{Strategy $\Rightarrow$ Retention rate}
       \begin{itemize}\itemsep1pt
-        \item $\delta_S{>}0$:訂閱(S)固定月費綁定、流失低於計次(T)。{\color{ottgray}Iyengar et al.\ 2011:含計次成分費率使留存 $-10.5\%$。}
-        \item $\delta_R{>}0$:留存策略(推薦/原創/防共享)直接提升留存。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
-        \item $\kappa_\rho s$:安裝基礎越大、內容/推薦/社群效用越高(\textbf{network externality})。{\color{ottgray}Katz--Shapiro 1985。}
+        \item $\delta_S{>}0$:訂閱制(S)對 Retention 有額外加成。{\color{ottgray}Iyengar et al.\ 2011:含計次成分費率使留存 $-10.5\%$。}
+        \item $\delta_R{>}0$:留存策略(推薦/原創/防共享)提升留存。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
+        \item $\kappa_\rho s$:平台越大、內容/推薦/社群效用越高(\textbf{network externality})。{\color{ottgray}Katz--Shapiro 1985。}
       \end{itemize}
     \end{block}
   \end{columns}
@@ -290,10 +339,10 @@
     \end{tabular}\\[0.4em]
     {\scriptsize $\alpha_0{=}0.10,\ \tilde\delta_T{=}{+}0.05,\ \tilde\delta_A{=}{+}0.15,\ \kappa_\alpha{=}0.20$}
     \column{0.54\textwidth}\footnotesize
-    \begin{block}{為何不同策略 $\Rightarrow$ 不同獲取率}
+    \begin{block}{Strategy $\Rightarrow$ Aqquisition rate}
       \begin{itemize}\itemsep1pt
-        \item $\tilde\delta_T{>}0$:計次(T)無訂閱承諾、門檻低 $\Rightarrow$ 拉新較易。{\color{ottgray}Datta et al.\ 2015(免費試用提高獲取)。}
-        \item $\tilde\delta_A{>}0$:獲取策略(行銷/補貼)直接提高拉新。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
+        \item $\tilde\delta_T{>}0$:計次(T)無訂閱承諾、門檻低 $\Rightarrow$ 拉新較易。{\color{ottgray}Datta et al.\ 2015(計次/免費試用提高獲取)。}
+        \item $\tilde\delta_A{>}0$:獲取策略(行銷/補貼)提高拉新。{\color{ottgray}Ben Rhouma \& Zaccour 2018。}
         \item $\kappa_\alpha s$:平台越大、口碑擴散越快(\textbf{network externality})。{\color{ottgray}Bass 1969。}
       \end{itemize}
     \end{block}
@@ -322,7 +371,7 @@
   \end{columns}
   \vskip0.35em
   \[ \boxed{\,C_A(s)=c_A\,(1+\lambda_A\, s),\qquad C_R(s)=c_R\,(1+\lambda_R\, s),\qquad \lambda_A>\lambda_R\,} \]
-  {\footnotesize\textbf{$\lambda_A>\lambda_R$:}市場越飽和,獲取(A)成本隨滲透率\textbf{陡升}、留存(R)\textbf{無此規模效應} $\Rightarrow$ 廠商提早轉向留存(Min et al.\ 2016)。\par}
+  {\footnotesize\textbf{$\lambda_A>\lambda_R$:}市場越飽和,獲取(A)成本隨市佔率\textbf{陡升}、留存(R)\textbf{無此規模效應} $\Rightarrow$ 廠商提早轉向留存(Min et al.\ 2016)。\par}
   \vskip0.3em
   \begin{block}{參數設計}\footnotesize
     收入:$p_S{=}15,\ p_T{=}5,\ \varphi_0{=}\varphi_1{=}0.5$(低 $s$ 時 $R(s,S)>R(s,T)$)。\quad
@@ -413,11 +462,9 @@
       低 $s$ 採 Trans-Acq(TVOD 試水) & YouTube Movies、利基平台以單片租購切入\\
       成長期 Sub-Acq(SVOD + 拉新) & Disney+、Apple TV+ 以訂閱 + 免費試用衝市佔\\
       成熟期 Sub-Ret(SVOD + 留存) & Netflix:推薦、原創、2022 打擊密碼共享\\
-      $s_\infty$ 為 0.74 & 串流市場「強者恆強」、領導者市佔黏著\\
+      Steady State $s_\infty$ 為 0.74 & 串流市場「強者恆強」、領導者市佔黏著\\
     \end{tabular}
   \end{block}
-  \vskip0.2em
-  {\footnotesize 策略地圖對應 OTT 平台「初創 TVOD 試水 $\to$ 規模化 SVOD 拉新 $\to$ 成熟期 SVOD 留客」的生命週期;Disney+ 由獲取轉留存正是沿策略地圖右移。}
 \end{frame}
 
 % =====================================================================
@@ -471,7 +518,7 @@
   \end{enumerate}
   \vskip0.3em
   \begin{exampleblock}{方法論貢獻}
-    在同一 Bellman 框架下整合\hl{收費模式選擇}與\hl{客群策略},並讓收費模式 $P$ 同時影響 $\rho$ 與 $\alpha$;所有函數形式皆有\textbf{經查證文獻}支撐(Bass 擴散 $\times$ 網路外部性 $\times$ 規模成本)。
+    在同一 Bellman 框架下整合\hl{收費模式選擇}與\hl{客群策略},並讓收費模式 $P$ 同時影響 $\rho$ 與 $\alpha$;。
   \end{exampleblock}
 \end{frame}
 
@@ -490,8 +537,8 @@
 \begin{frame}[plain]
   \vfill\centering
   {\color{rblue}\rule{0.5\textwidth}{1.4pt}}\\[0.8em]
-  {\Large\bfseries\color{rblue} 謝謝聆聽\quad Q\,\&\,A}\\[0.6em]
-  {\footnotesize\color{black!70} 線上影音串流平台之二維動態策略模型 $\cdot$ Group E $\cdot$ 2026}\\[0.6em]
+  {\Large\bfseries\color{rblue} 謝謝聆聽}\\[0.6em]
+  {\footnotesize\color{black!70} 線上影音串流平台之二維動態策略模型 $\cdot$ Group E}\\[0.6em]
   {\color{rblue}\rule{0.5\textwidth}{1.4pt}}
   \vfill
 \end{frame}
