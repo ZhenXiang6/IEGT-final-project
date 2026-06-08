@@ -210,7 +210,6 @@ plt.tight_layout(); plt.savefig("./fig_bifurcation.png", dpi=160, bbox_inches="t
 ss = np.linspace(0, 1, 200)
 fig, ax = plt.subplots(figsize=(6.8, 4.6))
 ax.plot(ss, [alpha(s, "S", "A") * (1 - s) for s in ss], color="#2A9D8F", lw=2.6, label=r"acquisition inflow $\alpha(s)(1-s)$")
-ax.plot(ss, [alpha(s, "S", "A") for s in ss], color="#2A9D8F", lw=1.4, ls=":", label=r"acquisition rate $\alpha(s)=\alpha_0+\kappa_\alpha s$")
 ax.plot(ss, [rho(s, "S", "R") * s for s in ss], color=BLUE, lw=2.6, label=r"retention inflow $\rho(s)\,s$")
 ax.set_xlabel("market share s"); ax.set_title("Transition building blocks: retention vs acquisition inflow", fontweight="bold")
 ax.legend(fontsize=9); ax.grid(alpha=0.3)
