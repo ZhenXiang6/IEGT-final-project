@@ -40,9 +40,13 @@ The model is described by a Bellman equation and solved numerically via **value 
 
 ```
 .
-├── 03_solve_model.py          # Baseline model (value iteration)
-├── 04_extension1.py           # Extension 1: network externality & multiple steady states
-├── 05_competitor_fixed.py     # Competitor extension: fixed Netflix market share
+├── 03_solve_model.py            # Baseline model (value iteration)
+├── 04_extension1.py             # Extension 1: network externality & multiple steady states
+├── 05_competitor_fixed.py       # Competitor extension: fixed Netflix market share
+├── OTT_strategy_slides.tex      # Beamer presentation (XeLaTeX, Traditional Chinese)
+├── OTT_strategy_slides.pdf      # Compiled slide deck (29 pages, royal-blue + grid theme)
+├── extension1_multi_steady.png  # Figure: bifurcation / phase / path-dependence
+├── competitor_fixed.png         # Figure: challenger value & policy under fixed s_N
 └── README.md
 ```
 
@@ -60,6 +64,27 @@ python 05_competitor_fixed.py
 ```
 
 Dependencies: `numpy`, `matplotlib`
+
+> Note: the `savefig`/`out_path` in each script is hardcoded to an absolute path from the
+> original author's machine. Change it to a local/relative path (e.g. `./strategy_map.png`)
+> before running, or the script will error.
+
+### Building the presentation
+
+The slide deck (`OTT_strategy_slides.tex`) summarizes the full report in Beamer. It is written
+in Traditional Chinese and **must be compiled with XeLaTeX** (CJK via `ctexbeamer` + the
+`PingFang TC` system font on macOS). Run twice so the table of contents, grid background, and
+frame counter resolve:
+
+```bash
+xelatex OTT_strategy_slides.tex
+xelatex OTT_strategy_slides.tex
+```
+
+Output: `OTT_strategy_slides.pdf` (29 pages, royal-blue + grid-paper theme). It follows a
+6-section flow — 研究背景與動機 → 文獻回顧 → 模型建構 → 求解結果與解讀 → 延伸模型與結果
+(all four extensions, one slide each) → 結論. The deck embeds `extension1_multi_steady.png`;
+the strategy map, value function, and 2×2 grids are drawn inline with TikZ.
 
 ---
 

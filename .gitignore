@@ -1,0 +1,24 @@
+# ===== LaTeX build artifacts (keep .tex source + final .pdf) =====
+*.aux
+*.log
+*.nav
+*.snm
+*.toc
+*.out
+*.vrb
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+
+# ===== Python =====
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ===== OS / editor =====
+.DS_Store
+.vscode/
